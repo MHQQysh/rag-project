@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    720.269775390625,
+                    561.3978271484375
+                ],
+                [
+                    720.269775390625,
+                    623.5174560546875
+                ],
+                [
+                    992.9442138671875,
+                    623.5174560546875
+                ],
+                [
+                    992.9442138671875,
+                    561.3978271484375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "parent_id": "693da13bf21981fa8e5afdd9a1eb42a2",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "770da92c5a1c898de96d0e6572a58089"
+    },
+    "page_content": "1 Allen Institute for AI shannons@allenai.org",
+    "type": "Document"
+}

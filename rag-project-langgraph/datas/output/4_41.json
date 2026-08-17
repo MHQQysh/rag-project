@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    496.97247314453125,
+                    345.76458740234375
+                ],
+                [
+                    496.97247314453125,
+                    671.8358154296875
+                ],
+                [
+                    1205.7218017578125,
+                    671.8358154296875
+                ],
+                [
+                    1205.7218017578125,
+                    345.76458740234375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 4,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Image",
+        "element_id": "e7764715cd1cecac56f9ea4d66cee68e"
+    },
+    "page_content": "Efficient Data Annotation DIA Model Hub OCR Module = | outpate /u",
+    "type": "Document"
+}

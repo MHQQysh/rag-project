@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>DeepSeek 知识库</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">DS</div>
+        <div><strong>DeepSeek RAG</strong><span>私有知识工作台</span></div>
+      </div>
+      <button id="newChat" class="new-chat"><span>＋</span> 新建对话</button>
+      <div class="section-label">最近对话</div>
+      <nav id="conversationList" class="conversation-list"></nav>
+      <div class="sidebar-status">
+        <span id="statusDot" class="status-dot"></span>
+        <div><strong id="statusText">正在检查服务</strong><span id="modelText">DeepSeek</span></div>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <h1 id="pageTitle">知识库问答</h1>
+          <p>回答附带原文出处，资料不足时明确说明</p>
+        </div>
+        <div class="metrics">
+          <span><b id="docCount">0</b> 文档</span>
+          <span><b id="chunkCount">0</b> 切片</span>
+        </div>
+      </header>
+
+      <section id="chatPanel" class="chat-panel">
+        <div id="emptyState" class="empty-state">
+          <div class="hero-orbit"><div class="hero-core">R</div></div>
+          <h2>从你的资料中找到答案</h2>
+          <p>先在右侧上传资料，然后直接提问。系统会检索相关原文，并交给本地 DeepSeek 综合回答。</p>
+          <div class="suggestions">
+            <button>总结知识库的核心内容</button>
+            <button>列出最重要的结论和依据</button>
+            <button>这些资料之间有哪些关联？</button>
+          </div>
+        </div>
+        <div id="messages" class="messages"></div>
+      </section>
+
+      <form id="composer" class="composer">
+        <textarea id="queryInput" rows="1" maxlength="10000" placeholder="输入问题，Enter 发送，Shift + Enter 换行"></textarea>
+        <div class="composer-bottom">
+          <div class="retrieval-settings">
+            <label>召回 <select id="topK"><option>4</option><option selected>6</option><option>8</option><option>10</option></select> 段</label>
+            <span id="composerHint">本地 DeepSeek · BGE-M3</span>
+          </div>
+          <button id="sendButton" type="submit" class="send-button" aria-label="发送">➜</button>
+        </div>
+      </form>
+    </main>
+
+    <aside class="knowledge-panel">
+      <div class="panel-heading">
+        <div><h2>知识库</h2><p>上传后自动解析与索引</p></div>
+        <button id="refreshDocs" class="icon-button" title="刷新">↻</button>
+      </div>
+      <label id="dropZone" class="drop-zone">
+        <input id="fileInput" type="file" multiple accept=".txt,.md,.pdf,.docx,.pptx,.xlsx,.csv,.html,.htm">
+        <span class="upload-icon">⇧</span>
+        <strong>点击或拖放文件</strong>
+        <small id="uploadHint">PDF / Word / PPT / Excel / Markdown</small>
+      </label>
+      <div id="uploadStatus" class="upload-status hidden"></div>
+      <div class="document-header"><span>已索引文档</span><span id="documentTotal">0</span></div>
+      <div id="documentList" class="document-list"></div>
+      <div class="privacy-note"><span>⌁</span><div><strong>数据保存在 g90</strong><p>文档和向量不会发送给智谱；问答由本地模型完成。</p></div></div>
+    </aside>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>

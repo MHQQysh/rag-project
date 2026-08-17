@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    654.3370361328125,
+                    255.52125549316406
+                ],
+                [
+                    654.3370361328125,
+                    284.3743591308594
+                ],
+                [
+                    1251.0015869140625,
+                    284.3743591308594
+                ],
+                [
+                    1251.0015869140625,
+                    255.52125549316406
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 7,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Header",
+        "element_id": "48d58ed9a3d95637df68c8b810147ba1"
+    },
+    "page_content": "LayoutParser: A Uniﬁed Toolkit for DL-Based DIA",
+    "type": "Document"
+}

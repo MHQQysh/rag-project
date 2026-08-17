@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    374.3472222222222,
+                    1570.04931640625
+                ],
+                [
+                    374.3472222222222,
+                    1698.7281494140625
+                ],
+                [
+                    1340.3498097622223,
+                    1698.7281494140625
+                ],
+                [
+                    1340.3498097622223,
+                    1570.04931640625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 7,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "f2a183c50558a0dfc7d56a42f9b05e43"
+    },
+    "page_content": "The OCR outputs will also be stored in the aforementioned layout data structures and can be seamlessly incorporated into the digitization pipeline. Currently LayoutParser supports the Tesseract and Google Cloud Vision OCR engines.",
+    "type": "Document"
+}

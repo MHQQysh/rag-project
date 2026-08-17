@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.781494140625,
+                    315.2135314941406
+                ],
+                [
+                    372.781494140625,
+                    760.8166666666666
+                ],
+                [
+                    1342.123779296875,
+                    760.8166666666666
+                ],
+                [
+                    1342.123779296875,
+                    315.2135314941406
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 10,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Image",
+        "element_id": "1bb3b6f7fd6c3c5c63834a28a6f191cd"
+    },
+    "page_content": "Intra-column reading order b Token Categories i : i i ) [ i i e : res O mber Column reading order Variable J il l companyye Column Categories (a) lllustration of the original Japanese um with detected layout element ts highlighted in colored boxes ] e T am x &% i T des e . i it i j i i = 1 4 i [ seton ader il B | i X L L] L] EL ; E 2>8 B Maximum Allowed Height (b) Nlustration of the recreated document with dense text structure for better OCR performance",
+    "type": "Document"
+}

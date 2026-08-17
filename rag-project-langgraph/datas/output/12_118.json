@@ -1,0 +1,52 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    373.05377197265625,
+                    358.6959228515625
+                ],
+                [
+                    373.05377197265625,
+                    753.313178888889
+                ],
+                [
+                    1339.602819549,
+                    753.313178888889
+                ],
+                [
+                    1339.602819549,
+                    358.6959228515625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "32",
+                "url": "cite.shen2020olala",
+                "start_index": 249
+            },
+            {
+                "text": "19",
+                "url": "cite.lin2014microsoft",
+                "start_index": 794
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 12,
+        "parent_id": "f31734a5244065a58be3510fa8782136",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "d56ca062197ce6302ed2e8871f73a30f"
+    },
+    "page_content": "structure, two object detection models have been trained to recognize individual columns and tokens, respectively. A small training set (400 images with approxi- mately 100 annotations each) is curated via the active learning based annotation tool [32] in LayoutParser. The models learn to identify both the categories and regions for each token or column via their distinct visual features. The layout data structure enables easy grouping of the tokens within each column, and rearranging columns to achieve the correct reading orders based on the horizontal position. Errors are identiﬁed and rectiﬁed via checking the consistency of the model predictions. Therefore, though trained on a small dataset, the pipeline achieves a high level of layout detection accuracy: it achieves a 96.97 AP [19] score across 5 categories for the column detection model, and a 89.23 AP across 4 categories for the token detection model.",
+    "type": "Document"
+}

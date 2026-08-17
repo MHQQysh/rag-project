@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.57500000000005,
+                    631.4957275390625
+                ],
+                [
+                    377.57500000000005,
+                    722.0343627929688
+                ],
+                [
+                    1346.13330078125,
+                    722.0343627929688
+                ],
+                [
+                    1346.13330078125,
+                    631.4957275390625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "977575ff2906f641f10928b385390383"
+    },
+    "page_content": "[11] Harley, A.W., Ufkes, A., Derpanis, K.G.: Evaluation of deep convolutional nets for document image classiﬁcation and retrieval. In: 2015 13th International Conference on Document Analysis and Recognition (ICDAR). pp. 991–995. IEEE (2015)",
+    "type": "Document"
+}

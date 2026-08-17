@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    709.738037109375,
+                    806.2307066666666
+                ],
+                [
+                    709.738037109375,
+                    866.1653911111111
+                ],
+                [
+                    998.7069702148438,
+                    866.1653911111111
+                ],
+                [
+                    998.7069702148438,
+                    806.2307066666666
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "parent_id": "693da13bf21981fa8e5afdd9a1eb42a2",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "9c6812445e6651f57cd24edae385f8d4"
+    },
+    "page_content": "5 University of Waterloo w422li@uwaterloo.ca",
+    "type": "Document"
+}

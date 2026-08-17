@@ -1,0 +1,87 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    370.66168212890625,
+                    782.8612670898438
+                ],
+                [
+                    370.66168212890625,
+                    1012.6773681640625
+                ],
+                [
+                    1342.4842529296875,
+                    1012.6773681640625
+                ],
+                [
+                    1342.4842529296875,
+                    782.8612670898438
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "22",
+                "url": "cite.oliveira2018dhsegment",
+                "start_index": 103
+            },
+            {
+                "text": "20",
+                "url": "cite.long2015fully",
+                "start_index": 146
+            },
+            {
+                "text": "28",
+                "url": "cite.ren2015faster",
+                "start_index": 250
+            },
+            {
+                "text": "12",
+                "url": "cite.he2017mask",
+                "start_index": 270
+            },
+            {
+                "text": "38",
+                "url": "cite.zhong2019publaynet",
+                "start_index": 318
+            },
+            {
+                "text": "30",
+                "url": "cite.schreiber2017deepdesrt",
+                "start_index": 344
+            },
+            {
+                "text": "26",
+                "url": "cite.prasad2020cascadetabnet",
+                "start_index": 348
+            },
+            {
+                "text": "29",
+                "url": "cite.scarselli2008graph",
+                "start_index": 391
+            },
+            {
+                "text": "27",
+                "url": "cite.qasim2019rethinking",
+                "start_index": 435
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "23ea20b370e805d2a5f33b10525ede2c"
+    },
+    "page_content": "Recently, various DL models and datasets have been developed for layout analysis tasks. The dhSegment [22] utilizes fully convolutional networks [20] for segmen- tation tasks on historical documents. Object detection-based methods like Faster R-CNN [28] and Mask R-CNN [12] are used for identifying document elements [38] and detecting tables [30, 26]. Most recently, Graph Neural Networks [29] have also been used in table detection [27]. However, these models are usually implemented individually and there is no uniﬁed framework to load and use such models.",
+    "type": "Document"
+}

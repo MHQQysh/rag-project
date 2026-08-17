@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    374.46944444444443,
+                    467.2808532714844
+                ],
+                [
+                    374.46944444444443,
+                    536.5951538085938
+                ],
+                [
+                    1336.9610595703125,
+                    536.5951538085938
+                ],
+                [
+                    1336.9610595703125,
+                    467.2808532714844
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "parent_id": "693da13bf21981fa8e5afdd9a1eb42a2",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "19ea524bd587e7032b84290cbf2eca92"
+    },
+    "page_content": "Zejiang Shen® (<), Ruochen Zhang?, Melissa Dell®, Benjamin Charles Germain Lee?, Jacob Carlson®, and Weining Li®",
+    "type": "Document"
+}

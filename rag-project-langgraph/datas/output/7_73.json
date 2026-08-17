@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.81111111111113,
+                    1817.4862622222222
+                ],
+                [
+                    371.81111111111113,
+                    1850.506103515625
+                ],
+                [
+                    1130.2816162109375,
+                    1850.506103515625
+                ],
+                [
+                    1130.2816162109375,
+                    1817.4862622222222
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 7,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "5ef749ad23a22f60567cb8b1ca79d1e9"
+    },
+    "page_content": "13 This is also available in the LayoutParser documentation pages.",
+    "type": "Document"
+}

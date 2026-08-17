@@ -1,0 +1,11 @@
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+.run
+logs
+runtime
+model-cache
+playground
+knowledge_base

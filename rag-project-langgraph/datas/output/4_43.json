@@ -1,0 +1,61 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    368.39483642578125,
+                    1093.32568359375
+                ],
+                [
+                    368.39483642578125,
+                    1325.1689453125
+                ],
+                [
+                    1342.7142333984375,
+                    1325.1689453125
+                ],
+                [
+                    1342.7142333984375,
+                    1093.32568359375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "8",
+                "url": "cite.gardner2018allennlp",
+                "start_index": 10
+            },
+            {
+                "text": "34",
+                "url": "cite.wolf2019huggingface",
+                "start_index": 31
+            },
+            {
+                "text": "23",
+                "url": "cite.paszke2017automatic",
+                "start_index": 381
+            },
+            {
+                "text": "1",
+                "url": "cite.tensorflow2015-whitepaper",
+                "start_index": 405
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 4,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "b4948db85ca791e99aa92589fc41734f"
+    },
+    "page_content": "AllenNLP [8] and transformers [34] have provided the community with complete DL-based support for developing and deploying models for general computer vision and natural language processing problems. LayoutParser, on the other hand, specializes speciﬁcally in DIA tasks. LayoutParser is also equipped with a community platform inspired by established model hubs such as Torch Hub [23] and TensorFlow Hub [1]. It enables the sharing of pretrained models as well as full document processing pipelines that are unique to DIA tasks.",
+    "type": "Document"
+}

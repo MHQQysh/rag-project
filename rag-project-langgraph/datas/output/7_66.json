@@ -1,0 +1,56 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    368.3379211425781,
+                    327.13373444444437
+                ],
+                [
+                    368.3379211425781,
+                    822.3380737304688
+                ],
+                [
+                    1340.7037353515625,
+                    822.3380737304688
+                ],
+                [
+                    1340.7037353515625,
+                    327.13373444444437
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "2",
+                "url": "figure.caption.5",
+                "start_index": 164
+            },
+            {
+                "text": "2",
+                "url": "table.caption.6",
+                "start_index": 1062
+            },
+            {
+                "text": ".",
+                "url": "Hfootnote.8",
+                "start_index": 1117
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 7,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "02294e00479d4d55286f011c68fb02ba"
+    },
+    "page_content": "Coordinates are the cornerstones for storing layout information. Currently, three types of Coordinate data structures are provided in LayoutParser, shown in Figure 2. Interval and Rectangle are the most common data types and support specifying 1D or 2D regions within a document. They are parameterized with 2 and 4 parameters. A Quadrilateral class is also implemented to support a more generalized representation of rectangular regions when the document is skewed or distorted, where the 4 corner points can be speciﬁed and a total of 8 degrees of freedom are supported. A wide collection of transformations like shift, pad, and scale, and operations like intersect, union, and is_in, are supported for these classes. Notably, it is common to separate a segment of the image and analyze it individually. LayoutParser provides full support for this scenario via image cropping operations crop_image and coordinate transformations like relative_to and condition_on that transform coordinates to and from their relative representations. We refer readers to Table 2 for a more detailed description of these operations13.",
+    "type": "Document"
+}

@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    368.66510009765625,
+                    1664.032958984375
+                ],
+                [
+                    368.66510009765625,
+                    1797.178466796875
+                ],
+                [
+                    1341.4849853515625,
+                    1797.178466796875
+                ],
+                [
+                    1341.4849853515625,
+                    1664.032958984375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 8,
+        "parent_id": "fef19a8f957fb7a15a620f603affa7eb",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "d269977eea9c0d2f67dd83d257953fdb"
+    },
+    "page_content": "Besides the oﬀ-the-shelf library, LayoutParser is also highly customizable with supports for highly unique and challenging document analysis tasks. Target document images can be vastly diﬀerent from the existing datasets for train- ing layout models, which leads to low layout detection accuracy. Training data",
+    "type": "Document"
+}

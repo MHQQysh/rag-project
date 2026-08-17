@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    363.7418518066406,
+                    348.50738525390625
+                ],
+                [
+                    363.7418518066406,
+                    447.90179443359375
+                ],
+                [
+                    1346.2646484375,
+                    447.90179443359375
+                ],
+                [
+                    1346.2646484375,
+                    348.50738525390625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 8,
+        "parent_id": "3bb37678da59898b7785d0f518a10209",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "079d6efa36a660ac326bdccdd591f817"
+    },
+    "page_content": "Table 2: All operations supported by the layout elements. The same APIs are supported across diﬀerent layout element classes including Coordinate types, TextBlock and Layout.",
+    "type": "Document"
+}

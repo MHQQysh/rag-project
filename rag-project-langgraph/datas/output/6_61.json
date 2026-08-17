@@ -1,0 +1,51 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.233154296875,
+                    1122.5517578125
+                ],
+                [
+                    371.233154296875,
+                    1323.6551513671875
+                ],
+                [
+                    1338.8324310627222,
+                    1323.6551513671875
+                ],
+                [
+                    1338.8324310627222,
+                    1122.5517578125
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "1",
+                "url": "table.caption.3",
+                "start_index": 15
+            },
+            {
+                "text": "3 . 5",
+                "url": "subsection.1.3.5",
+                "start_index": 437
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 6,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "d997f63fd79c7e03050ca01b58dfdf0a"
+    },
+    "page_content": "Shown in Table 1, LayoutParser currently hosts 9 pre-trained models trained on 5 diﬀerent datasets. Description of the training dataset is provided alongside with the trained models such that users can quickly identify the most suitable models for their tasks. Additionally, when such a model is not readily available, LayoutParser also supports training customized layout models and community sharing of the models (detailed in Section 3.5).",
+    "type": "Document"
+}

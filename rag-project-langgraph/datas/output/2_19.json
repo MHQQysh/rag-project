@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    386.03055555555557,
+                    1272.3920677777778
+                ],
+                [
+                    386.03055555555557,
+                    1334.40576171875
+                ],
+                [
+                    1338.4700927734375,
+                    1334.40576171875
+                ],
+                [
+                    1338.4700927734375,
+                    1272.3920677777778
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "parent_id": "6ef4849c6337ce11b28bcca21d06a332",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "85aadf56d58bb549302037dd8af40b75"
+    },
+    "page_content": "2. A rich repository of pre-trained neural network models (Model Zoo) that underlies the oﬀ-the-shelf usage",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    369.00054931640625,
+                    676.954833984375
+                ],
+                [
+                    369.00054931640625,
+                    807.0405883789062
+                ],
+                [
+                    1346.05615234375,
+                    807.0405883789062
+                ],
+                [
+                    1346.05615234375,
+                    676.954833984375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 13,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "f59b8a0c85e4e413e7ac523f59b203c3"
+    },
+    "page_content": "Fig.6: This lightweight table detector can identify tables (outlined in red) and cells (shaded in blue) in diﬀerent locations on a page. In very few cases (d), it might generate minor error predictions, e.g, failing to capture the top text line of a table.",
+    "type": "Document"
+}

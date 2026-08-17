@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    373.3345947265625,
+                    959.0115122222221
+                ],
+                [
+                    373.3345947265625,
+                    1319.2109375
+                ],
+                [
+                    834.4524536132812,
+                    1319.2109375
+                ],
+                [
+                    834.4524536132812,
+                    959.0115122222221
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "5",
+                "url": "figure.caption.10",
+                "start_index": 432
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 11,
+        "parent_id": "b737ef6390c63dfa649bfad32df8ceb4",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "714e8083c34bd66104955741916ce0cc"
+    },
+    "page_content": "In this example, LayoutParser was used to develop a comprehensive pipeline, shown in Figure 5, to gener- ate high-quality structured data from historical Japanese ﬁrm ﬁnancial ta- bles with complicated layouts. The pipeline applies two layout models to identify diﬀerent levels of document structures and two customized OCR engines for optimized character recog- nition accuracy.",
+    "type": "Document"
+}

@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    363.1297912597656,
+                    1088.556640625
+                ],
+                [
+                    363.1297912597656,
+                    1186.880859375
+                ],
+                [
+                    1345.6868896484375,
+                    1186.880859375
+                ],
+                [
+                    1345.6868896484375,
+                    1088.556640625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "parent_id": "6ef4849c6337ce11b28bcca21d06a332",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "cb0285a12179b36dec64371e6c3da272"
+    },
+    "page_content": "LayoutParser provides a uniﬁed toolkit to support DL-based document image analysis and processing. To address the aforementioned challenges, LayoutParser is built with the following components:",
+    "type": "Document"
+}

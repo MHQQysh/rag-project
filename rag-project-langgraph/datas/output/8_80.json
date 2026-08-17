@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.02813720703125,
+                    1351.996337890625
+                ],
+                [
+                    372.02813720703125,
+                    1548.7918701171875
+                ],
+                [
+                    1336.2515869140625,
+                    1548.7918701171875
+                ],
+                [
+                    1336.2515869140625,
+                    1351.996337890625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "3",
+                "url": "figure.caption.8",
+                "start_index": 614
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 8,
+        "parent_id": "cab37dd4fa2d6ccd9bc0cf0c6b332a9d",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "d7f0a1b00c4a532584c629f32cbb95ab"
+    },
+    "page_content": "Visualization of the layout detection results is critical for both presentation and debugging. LayoutParser is built with an integrated API for displaying the layout information along with the original document image. Shown in Figure 3, it enables presenting layout data with rich meta information and features in diﬀerent modes. More detailed information can be found in the online LayoutParser documentation page.",
+    "type": "Document"
+}

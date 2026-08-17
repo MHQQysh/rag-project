@@ -1,0 +1,71 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    366.4725646972656,
+                    1326.53662109375
+                ],
+                [
+                    366.4725646972656,
+                    1556.7738037109375
+                ],
+                [
+                    1340.302490234375,
+                    1556.7738037109375
+                ],
+                [
+                    1340.302490234375,
+                    1326.53662109375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "3",
+                "url": "cite.antonacopoulos2009realistic",
+                "start_index": 128
+            },
+            {
+                "text": "38",
+                "url": "cite.zhong2019publaynet",
+                "start_index": 161
+            },
+            {
+                "text": "18",
+                "url": "cite.li2019tablebank",
+                "start_index": 202
+            },
+            {
+                "text": "16",
+                "url": "cite.newspaper_navigator_search_application",
+                "start_index": 263
+            },
+            {
+                "text": "17",
+                "url": "cite.newspaper_navigator_dataset",
+                "start_index": 267
+            },
+            {
+                "text": "31",
+                "url": "cite.shen2020large",
+                "start_index": 311
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 4,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "7651db80014a85ab253367d3bd3e4f88"
+    },
+    "page_content": "There have been a variety of document data collections to facilitate the development of DL models. Some examples include PRImA [3](magazine layouts), PubLayNet [38](academic paper layouts), Table Bank [18](tables in academic papers), Newspaper Navigator Dataset [16, 17](newspaper ﬁgure layouts) and HJDataset [31](historical Japanese document layouts). A spectrum of models trained on these datasets are currently available in the LayoutParser model zoo to support diﬀerent use cases.",
+    "type": "Document"
+}

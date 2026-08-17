@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.575,
+                    724.8909301757812
+                ],
+                [
+                    377.575,
+                    781.7017211914062
+                ],
+                [
+                    1339.319091796875,
+                    781.7017211914062
+                ],
+                [
+                    1339.319091796875,
+                    724.8909301757812
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "0bcbd5a5ac19b4329ed1ac5f90a9d70f"
+    },
+    "page_content": "[12] He, K., Gkioxari, G., Doll´ar, P., Girshick, R.: Mask r-cnn. In: Proceedings of the IEEE international conference on computer vision. pp. 2961–2969 (2017)",
+    "type": "Document"
+}

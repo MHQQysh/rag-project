@@ -1,0 +1,62 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    365.21356201171875,
+                    1011.1408081054688
+                ],
+                [
+                    365.21356201171875,
+                    1241.58251953125
+                ],
+                [
+                    1345.0557861328125,
+                    1241.58251953125
+                ],
+                [
+                    1345.0557861328125,
+                    1011.1408081054688
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "26",
+                "url": "cite.prasad2020cascadetabnet",
+                "start_index": 152
+            },
+            {
+                "text": "30",
+                "url": "cite.schreiber2017deepdesrt",
+                "start_index": 156
+            },
+            {
+                "text": "27",
+                "url": "cite.qasim2019rethinking",
+                "start_index": 160
+            },
+            {
+                "text": "18",
+                "url": "Hfootnote.13",
+                "start_index": 174
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 13,
+        "parent_id": "0e1bf4b92be7457cf36ff737a620974a",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "d590841f2372131a3a2d3638418f2213"
+    },
+    "page_content": "Detecting tables and parsing their structures (table extraction) are of central im- portance for many document digitization tasks. Many previous works [26, 30, 27] and tools 18 have been developed to identify and parse table structures. Yet they might require training complicated models from scratch, or are only applicable for born-digital PDF documents. In this section, we show how LayoutParser can help build a light-weight accurate visual table extractor for legal docket tables using the existing resources with minimal eﬀort.",
+    "type": "Document"
+}

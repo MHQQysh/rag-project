@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.575,
+                    1759.6656494140625
+                ],
+                [
+                    377.575,
+                    1849.26416015625
+                ],
+                [
+                    1341.1907958984375,
+                    1849.26416015625
+                ],
+                [
+                    1341.1907958984375,
+                    1759.6656494140625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "f063df961622d9b4190f0ba2999923e7"
+    },
+    "page_content": "[22] Oliveira, S.A., Seguin, B., Kaplan, F.: dhsegment: A generic deep-learning approach for document segmentation. In: 2018 16th International Conference on Frontiers in Handwriting Recognition (ICFHR). pp. 7–12. IEEE (2018)",
+    "type": "Document"
+}

@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.6500549316406,
+                    1077.52685546875
+                ],
+                [
+                    371.6500549316406,
+                    1305.1632080078125
+                ],
+                [
+                    1341.103759765625,
+                    1305.1632080078125
+                ],
+                [
+                    1341.103759765625,
+                    1077.52685546875
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "17",
+                "url": "cite.newspaper_navigator_dataset",
+                "start_index": 490
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 10,
+        "parent_id": "f791f077e8d2d8faec47792a1d576766",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "35bc3fa0635dc2c5dd9feadb4ba039b1"
+    },
+    "page_content": "Another focus of LayoutParser is promoting the reusability of layout detection models and full digitization pipelines. Similar to many existing deep learning libraries, LayoutParser comes with a community model hub for distributing layout models. End-users can upload their self-trained models to the model hub, and these models can be loaded into a similar interface as the currently available LayoutParser pre-trained models. For example, the model trained on the News Navigator dataset [17] has been incorporated in the model hub.",
+    "type": "Document"
+}

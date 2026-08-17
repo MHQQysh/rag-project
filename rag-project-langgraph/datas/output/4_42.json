@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.8564453125,
+                    727.8052368164062
+                ],
+                [
+                    371.8564453125,
+                    1022.99658203125
+                ],
+                [
+                    1340.3437215066672,
+                    1022.99658203125
+                ],
+                [
+                    1340.3437215066672,
+                    727.8052368164062
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 4,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "466f0bc21599ccf0fa27c021cb023f90"
+    },
+    "page_content": "Fig.1: The overall architecture of LayoutParser. For an input document image, the core LayoutParser library provides a set of oﬀ-the-shelf tools for layout detection, OCR, visualization, and storage, backed by a carefully designed layout data structure. LayoutParser also supports high level customization via eﬃcient layout annotation and model training functions. These improve model accuracy on the target samples. The community platform enables the easy sharing of DIA models and whole digitization pipelines to promote reusability and reproducibility. A collection of detailed documentation, tutorials and exemplar projects make LayoutParser easy to learn and use.",
+    "type": "Document"
+}

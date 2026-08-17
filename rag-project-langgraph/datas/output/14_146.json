@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    385.12799072265625,
+                    1295.613525390625
+                ],
+                [
+                    385.12799072265625,
+                    1417.9949951171875
+                ],
+                [
+                    1348.0120849609375,
+                    1417.9949951171875
+                ],
+                [
+                    1348.0120849609375,
+                    1295.613525390625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 14,
+        "parent_id": "79ccc2c57c8d67f90627087e18410972",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "78f72bf0cb439effaabe62d302f05a1d"
+    },
+    "page_content": "[2] Alberti, M., Pondenkandath, V., W¨ursch, M., Ingold, R., Liwicki, M.: Deepdiva: a highly-functional python framework for reproducible experiments. In: 2018 16th International Conference on Frontiers in Handwriting Recognition (ICFHR). pp. 423–428. IEEE (2018)",
+    "type": "Document"
+}

@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    390.375,
+                    1418.780029296875
+                ],
+                [
+                    390.375,
+                    1538.437255859375
+                ],
+                [
+                    1342.0543212890625,
+                    1538.437255859375
+                ],
+                [
+                    1342.0543212890625,
+                    1418.780029296875
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 14,
+        "parent_id": "79ccc2c57c8d67f90627087e18410972",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "75e151c31cb983957fdfe57655a6ab30"
+    },
+    "page_content": "[3] Antonacopoulos, A., Bridson, D., Papadopoulos, C., Pletschacher, S.: A realistic dataset for performance evaluation of document layout analysis. In: 2009 10th International Conference on Document Analysis and Recognition. pp. 296–300. IEEE (2009)",
+    "type": "Document"
+}

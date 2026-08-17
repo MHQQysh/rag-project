@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    1160.240478515625,
+                    632.2811889648438
+                ],
+                [
+                    1160.240478515625,
+                    646.5846557617188
+                ],
+                [
+                    1281.4814453125,
+                    646.5846557617188
+                ],
+                [
+                    1281.4814453125,
+                    632.2811889648438
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 13,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "24781264b076c2a531e34a61a6f0f480"
+    },
+    "page_content": "() Mis dtected text line:",
+    "type": "Document"
+}

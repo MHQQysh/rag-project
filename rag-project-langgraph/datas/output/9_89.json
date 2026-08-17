@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    861.9703979492188,
+                    817.230712890625
+                ],
+                [
+                    861.9703979492188,
+                    837.3703002929688
+                ],
+                [
+                    1187.9407958984375,
+                    837.3703002929688
+                ],
+                [
+                    1187.9407958984375,
+                    817.230712890625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 9,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "5053f39666d39932d1bdaf4d15c42842"
+    },
+    "page_content": "Mode Il Drawing OCR'd Text at the Correspoding Position",
+    "type": "Document"
+}

@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.9224548339844,
+                    1726.16404
+                ],
+                [
+                    377.9224548339844,
+                    1759.0933837890625
+                ],
+                [
+                    866.8425903320312,
+                    1759.0933837890625
+                ],
+                [
+                    866.8425903320312,
+                    1726.16404
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "11482316d89c42780cdfe794994f4bb8"
+    },
+    "page_content": "9 https://github.com/leonlulu/DeepLayout",
+    "type": "Document"
+}

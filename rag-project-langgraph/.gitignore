@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.idea/
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.venv/
+.python/
+.cache/
+.tmp/
+*.log
+venv/
+logs/
+runtime/

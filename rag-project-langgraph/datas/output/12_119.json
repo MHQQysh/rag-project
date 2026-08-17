@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    368.68536376953125,
+                    765.869384765625
+                ],
+                [
+                    368.68536376953125,
+                    1094.80419921875
+                ],
+                [
+                    1338.5760498046875,
+                    1094.80419921875
+                ],
+                [
+                    1338.5760498046875,
+                    765.869384765625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "4",
+                "url": "figure.caption.9",
+                "start_index": 485
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 12,
+        "parent_id": "f31734a5244065a58be3510fa8782136",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "64608c11434293ec561d5516cf49b2cf"
+    },
+    "page_content": "A combination of character recognition methods is developed to tackle the unique challenges in this document. In our experiments, we found that irregular spacing between the tokens led to a low character recognition recall rate, whereas existing OCR models tend to perform better on densely-arranged texts. To overcome this challenge, we create a document reorganization algorithm that rearranges the text based on the token bounding boxes detected in the layout analysis step. Figure 4 (b) illustrates the generated image of dense text, which is sent to the OCR APIs as a whole to reduce the transaction costs. The ﬂexible coordinate system in LayoutParser is used to transform the OCR results relative to their original positions on the page.",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    390.375,
+                    419.5430603027344
+                ],
+                [
+                    390.375,
+                    509.63812255859375
+                ],
+                [
+                    1339.2489171555553,
+                    509.63812255859375
+                ],
+                [
+                    1339.2489171555553,
+                    419.5430603027344
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "fbc94a934b07747c24fd2b16da82f5ee"
+    },
+    "page_content": "P. 9 Lukasz Garncarek, Powalski, R., Stanistawek, T., Topolski, B., Halama, Gralinski, F.: Lambert: Layout-aware (language) modeling using bert for in- formation extraction (2020)",
+    "type": "Document"
+}

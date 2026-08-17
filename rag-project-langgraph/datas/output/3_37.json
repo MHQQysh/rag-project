@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    370.97412109375,
+                    1787.0445955555554
+                ],
+                [
+                    370.97412109375,
+                    1819.314697265625
+                ],
+                [
+                    859.5470581054688,
+                    1819.314697265625
+                ],
+                [
+                    859.5470581054688,
+                    1787.0445955555554
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "631f3008d861e2bc2f98f659ca683e0c"
+    },
+    "page_content": "11 https://github.com/JaidedAI/EasyOCR",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    542.4583333333333,
+                    321.7714444444444
+                ],
+                [
+                    542.4583333333333,
+                    826.1194444444445
+                ],
+                [
+                    1166.8136666666664,
+                    826.1194444444445
+                ],
+                [
+                    1166.8136666666664,
+                    321.7714444444444
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 6,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Image",
+        "element_id": "f4b220ee8b36ec8f7944838f45308fac"
+    },
+    "page_content": "inteal Quadrteral Rectange Coordinate Coordinate + Block Block textblock Extra features Text Type Reading Order [ coordinatel , textblockl textblock | layoutl ] layout A list of the layout elements The same transformation and operation APIs",
+    "type": "Document"
+}

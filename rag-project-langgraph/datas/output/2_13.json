@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.6945495605469,
+                    257.4113377777776
+                ],
+                [
+                    371.6945495605469,
+                    282.31800444444434
+                ],
+                [
+                    389.9260559082031,
+                    282.31800444444434
+                ],
+                [
+                    389.9260559082031,
+                    257.4113377777776
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "filename": "layout-parser-paper.pdf",
+        "category": "PageNumber",
+        "element_id": "8ddb9ae70d1b1d2e302cb42a1769e8ab"
+    },
+    "page_content": "2",
+    "type": "Document"
+}

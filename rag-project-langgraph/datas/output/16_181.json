@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.575,
+                    1210.484375
+                ],
+                [
+                    377.575,
+                    1329.085693359375
+                ],
+                [
+                    1342.1513671875,
+                    1329.085693359375
+                ],
+                [
+                    1342.1513671875,
+                    1210.484375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 16,
+        "parent_id": "0b724f39d88b9738a3ec2f6b3e142527",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "a850a6ede2dadbe333c782695675ec33"
+    },
+    "page_content": "[33] Studer, L., Alberti, M., Pondenkandath, V., Goktepe, P., Kolonko, T., Fischer, A., Liwicki, M., Ingold, R.: A comprehensive study of imagenet pre-training for historical document image analysis. In: 2019 International Conference on Document Analysis and Recognition (ICDAR). pp. 720–725. IEEE (2019)",
+    "type": "Document"
+}

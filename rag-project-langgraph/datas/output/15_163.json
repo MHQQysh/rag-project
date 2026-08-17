@@ -1,0 +1,46 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.57500000000005,
+                    1211.078369140625
+                ],
+                [
+                    377.57500000000005,
+                    1363.0177001953125
+                ],
+                [
+                    1355.748046875,
+                    1363.0177001953125
+                ],
+                [
+                    1355.748046875,
+                    1211.078369140625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "https :// doi . org / 10 . 1145 / 3340531 . 3412767",
+                "url": "https://doi.org/10.1145/3340531.3412767",
+                "start_index": 334
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "3e0a387a794e6cffb7851971267420c8"
+    },
+    "page_content": "[17] Lee, B.C.G., Mears, J., Jakeway, E., Ferriter, M., Adams, C., Yarasavage, N., Thomas, D., Zwaard, K., Weld, D.S.: The Newspaper Navigator Dataset: Extracting Headlines and Visual Content from 16 Million Historic Newspaper Pages in Chronicling America, p. 3055–3062. Association for Computing Machinery, New York, NY, USA (2020), https://doi.org/10.1145/3340531.3412767",
+    "type": "Document"
+}

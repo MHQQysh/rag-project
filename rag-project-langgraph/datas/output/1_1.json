@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    45.388888888888886,
+                    589.9458618164062
+                ],
+                [
+                    45.388888888888886,
+                    1542.93359375
+                ],
+                [
+                    100.94444444444446,
+                    1542.93359375
+                ],
+                [
+                    100.94444444444446,
+                    589.9458618164062
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "parent_id": "b7f58c2fd9c15949a55a62eb84e39575",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "af6eb0f727c7b91679dd32d189ae32ed"
+    },
+    "page_content": "1 2 0 2 n u J 1 2 ] V C . s c [ 2 v 8 4 3 5 1 . 3 0 1 2 : v i X r",
+    "type": "Document"
+}

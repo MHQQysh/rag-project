@@ -1,0 +1,82 @@
+name: deepseek-rag
+
+services:
+  app:
+    build: .
+    container_name: deepseek-rag-app
+    restart: unless-stopped
+    ports:
+      - "${RAG_PORT:-6006}:6006"
+    environment:
+      RAG_DATA_DIR: /app/runtime
+      RAG_LLM_BASE_URL: http://llm:8000/v1
+      RAG_LLM_MODEL: deepseek-local
+      RAG_LLM_API_KEY: local-not-required
+      RAG_EMBEDDING_URL: http://embeddings:8000/v1
+      RAG_EMBEDDING_MODE: openai
+      RAG_EMBEDDING_MODEL: bge-m3
+      RAG_TOP_K: ${RAG_TOP_K:-6}
+      RAG_SCORE_THRESHOLD: ${RAG_SCORE_THRESHOLD:-0.20}
+      RAG_MAX_UPLOAD_MB: ${RAG_MAX_UPLOAD_MB:-50}
+    volumes:
+      - ./runtime:/app/runtime
+    depends_on:
+      - llm
+      - embeddings
+
+  llm:
+    image: vllm/vllm-openai:v0.20.1
+    container_name: deepseek-rag-llm
+    restart: unless-stopped
+    runtime: nvidia
+    ipc: host
+    shm_size: 16gb
+    environment:
+      NVIDIA_VISIBLE_DEVICES: "${LLM_GPU:-0}"
+      HF_HOME: /models/huggingface
+      HF_ENDPOINT: https://hf-mirror.com
+    volumes:
+      - ./model-cache:/models
+    ports:
+      - "127.0.0.1:${LLM_PORT:-8001}:8000"
+    command:
+      - /models/modelscope/deepseek-14b
+      - --served-model-name
+      - deepseek-local
+      - --dtype
+      - bfloat16
+      - --max-model-len
+      - "32768"
+      - --gpu-memory-utilization
+      - "0.65"
+      - --max-num-seqs
+      - "32"
+      - --enable-prefix-caching
+      - --trust-remote-code
+
+  embeddings:
+    image: vllm/vllm-openai:v0.20.1
+    container_name: deepseek-rag-embeddings
+    restart: unless-stopped
+    runtime: nvidia
+    environment:
+      NVIDIA_VISIBLE_DEVICES: "${EMBEDDING_GPU:-1}"
+      HF_HOME: /models/huggingface
+      HF_ENDPOINT: https://hf-mirror.com
+    volumes:
+      - ./model-cache:/models
+    ports:
+      - "127.0.0.1:${EMBEDDING_PORT:-8002}:8000"
+    command:
+      - /models/modelscope/bge-m3
+      - --served-model-name
+      - bge-m3
+      - --runner
+      - pooling
+      - --dtype
+      - bfloat16
+      - --max-model-len
+      - "8192"
+      - --gpu-memory-utilization
+      - "0.20"
+      - --trust-remote-code

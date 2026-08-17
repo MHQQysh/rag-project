@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    399.119384765625,
+                    326.3421630859375
+                ],
+                [
+                    399.119384765625,
+                    357.0469665527344
+                ],
+                [
+                    830.0193481445312,
+                    357.0469665527344
+                ],
+                [
+                    830.0193481445312,
+                    326.3421630859375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 12,
+        "parent_id": "f31734a5244065a58be3510fa8782136",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "39de58f17fd774996e602161be11e06a"
+    },
+    "page_content": "To decipher the complicated layout",
+    "type": "Document"
+}

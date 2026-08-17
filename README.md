@@ -1,43 +1,19 @@
 # RAG Project
 
-基于 LangGraph、LangChain 和 Milvus 的企业知识库 RAG 示例项目。
+本仓库将两个可独立运行的 RAG 版本拆分在并列目录中，方便分别使用、部署与维护。
 
-## 项目结构
+## 目录
 
-- `agent/`：RAG Agent 示例
-- `graph/`：基础 LangGraph RAG 流程
-- `graph2/`：带路由、查询改写、文档评分和幻觉检查的流程
-- `documents/`：Markdown 解析及 Milvus 写入、检索逻辑
-- `llm_models/`：LLM 与 Embedding 配置
-- `datas/md/`：知识库 Markdown 文档
-- `datas/output/`：文档解析结果
-- `docs/`：项目配套文档
+| 目录 | 定位 | 主要入口 |
+|---|---|---|
+| [`rag-project/`](rag-project/README.md) | 完整网页知识库：FastAPI、文档上传、SQLite、DeepSeek 与 BGE-M3 | `rag-project/startup.py`、`rag-project/compose.yaml` |
+| [`rag-project-langgraph/`](rag-project-langgraph/README.md) | LangGraph RAG 工作流：基础检索流程与自适应路由流程 | `graph.graph1`、`graph2.graph_2` |
 
-## 安装
+两个版本彼此独立，各自包含 README、依赖文件与启动方式。运行前请进入对应目录，不要在仓库根目录混装依赖。
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-Copy-Item .env.example .env
-```
+## 推荐选择
 
-在 `.env` 中配置所需的 API Key：
+- 需要浏览器页面、上传文件和持久化会话：使用 `rag-project/`。
+- 需要研究 LangGraph 节点、路由、检索与生成流程：使用 `rag-project-langgraph/`。
 
-```dotenv
-OPENAI_API_KEY=
-DEEPSEEK_API_KEY=
-MILVUS_URI=http://127.0.0.1:19530
-MILVUS_COLLECTION_NAME=t_collection01
-```
-
-导入知识文档前，还需要根据本机路径调整 `documents/write_milvus.py` 中的 `md_dir`。
-
-## 运行示例
-
-```powershell
-python -m graph.graph1
-python -m graph2.graph_2
-```
-
-`main.py` 是 IDE 创建的示例文件，不是 RAG 程序入口。
+运行数据、模型缓存、虚拟环境、日志和 `.env` 均不提交到 GitHub；请根据各子目录的 `.env.example` 在部署机器上配置。

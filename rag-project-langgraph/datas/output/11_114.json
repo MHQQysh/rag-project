@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.81111111111113,
+                    1787.0445955555554
+                ],
+                [
+                    371.81111111111113,
+                    1850.2591552734375
+                ],
+                [
+                    1339.80126953125,
+                    1850.2591552734375
+                ],
+                [
+                    1339.80126953125,
+                    1787.0445955555554
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 11,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "1c273dc26f08316ce57b4774a29d4600"
+    },
+    "page_content": "15 A document page consists of eight rows like this. For simplicity we skip the row segmentation discussion and refer readers to the source code when available.",
+    "type": "Document"
+}
