@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    384.44793701171875,
+                    1337.4925537109375
+                ],
+                [
+                    384.44793701171875,
+                    1399.8602294921875
+                ],
+                [
+                    1344.791748046875,
+                    1399.8602294921875
+                ],
+                [
+                    1344.791748046875,
+                    1337.4925537109375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "parent_id": "6ef4849c6337ce11b28bcca21d06a332",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "355f55b54923cfc2a861b2c01dc4e6bc"
+    },
+    "page_content": "3. Comprehensive tools for eﬃcient document image data annotation and model tuning to support diﬀerent levels of customization",
+    "type": "Document"
+}

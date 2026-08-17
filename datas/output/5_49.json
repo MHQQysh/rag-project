@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    407.075,
+                    348.3491516113281
+                ],
+                [
+                    407.075,
+                    379.0393371582031
+                ],
+                [
+                    1303.4412841796875,
+                    379.0393371582031
+                ],
+                [
+                    1303.4412841796875,
+                    348.3491516113281
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 5,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "bb9603875915cf44e225bf8572b0d4be"
+    },
+    "page_content": "Table 1: Current layout detection models in the LayoutParser model zoo",
+    "type": "Document"
+}

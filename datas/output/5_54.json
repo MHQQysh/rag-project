@@ -1,0 +1,57 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.40740966796875,
+                    1105.8309566666667
+                ],
+                [
+                    371.40740966796875,
+                    1400.5455322265625
+                ],
+                [
+                    1340.498291015625,
+                    1400.5455322265625
+                ],
+                [
+                    1340.498291015625,
+                    1105.8309566666667
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "28",
+                "url": "cite.ren2015faster",
+                "start_index": 383
+            },
+            {
+                "text": "12",
+                "url": "cite.he2017mask",
+                "start_index": 403
+            },
+            {
+                "text": "35",
+                "url": "cite.wu2019detectron2",
+                "start_index": 588
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 5,
+        "parent_id": "9e349da0d3169a69ebef29f87c80aa84",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "f446727c56457e21e13708bf3821774d"
+    },
+    "page_content": "In LayoutParser, a layout model takes a document image as an input and generates a list of rectangular boxes for the target content regions. Diﬀerent from traditional methods, it relies on deep convolutional neural networks rather than manually curated rules to identify content regions. It is formulated as an object detection problem and state-of-the-art models like Faster R-CNN [28] and Mask R-CNN [12] are used. This yields prediction results of high accuracy and makes it possible to build a concise, generalized interface for layout detection. LayoutParser, built upon Detectron2 [35], provides a minimal API that can perform layout detection with only four lines of code in Python:",
+    "type": "Document"
+}

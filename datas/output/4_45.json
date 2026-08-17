@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    370.7864074707031,
+                    1612.6368408203125
+                ],
+                [
+                    370.7864074707031,
+                    1650.663330078125
+                ],
+                [
+                    938.5361938476562,
+                    1650.663330078125
+                ],
+                [
+                    938.5361938476562,
+                    1612.6368408203125
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 4,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "5a1838a8f40b4523094652cf14ab974c"
+    },
+    "page_content": "3 The Core LayoutParser Library",
+    "type": "Document"
+}

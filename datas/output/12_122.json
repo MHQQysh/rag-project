@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.81111111111113,
+                    1726.16404
+                ],
+                [
+                    371.81111111111113,
+                    1787.4234619140625
+                ],
+                [
+                    1341.150634765625,
+                    1787.4234619140625
+                ],
+                [
+                    1341.150634765625,
+                    1726.16404
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 12,
+        "parent_id": "f31734a5244065a58be3510fa8782136",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "29b4bba15adfb4d1178583da162fba41"
+    },
+    "page_content": "16 This measures the overlap between the detected and ground-truth characters, and the maximum is 1.",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    854.661111111111,
+                    1053.1317138671875
+                ],
+                [
+                    854.661111111111,
+                    1562.3222222222223
+                ],
+                [
+                    1334.9642777777776,
+                    1562.3222222222223
+                ],
+                [
+                    1334.9642777777776,
+                    1053.1317138671875
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 11,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Image",
+        "element_id": "3d6d91dbef12df86765942fb1dbe8204"
+    },
+    "page_content": "Active Learning Layout Annotate Layout Dataset | +—— Annotation Toolkit A Deep Learning Layout Layout Detection Model Training & Inference, Post-processing — Handy Data Structures & \\ Lo ro ) Al Pls for Layout Data 4 Default and Customized Text Recognition CR Models ¥ Visualization & Export Layout Structure Visualization & Storage The Japanese Document Helpful LayoutParser Modules Digitization Pipeline",
+    "type": "Document"
+}

@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.575,
+                    1635.9556884765625
+                ],
+                [
+                    377.575,
+                    1757.50830078125
+                ],
+                [
+                    1339.9530069333332,
+                    1757.50830078125
+                ],
+                [
+                    1339.9530069333332,
+                    1635.9556884765625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "https :// doi . org / 10 . 1109 / ICDAR . 2019 . 00166",
+                "url": "https://doi.org/10.1109/ICDAR.2019.00166",
+                "start_index": 55
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 16,
+        "parent_id": "0b724f39d88b9738a3ec2f6b3e142527",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "2172a74417f7338657f705df06911206"
+    },
+    "page_content": "[38] Zhong, X., Tang, J., Yepes, A.J.: Publaynet: largest dataset ever for doc- ument layout analysis. In: 2019 International Conference on Document Analysis and Recognition (ICDAR). pp. 1015–1022. IEEE (Sep 2019). https://doi.org/10.1109/ICDAR.2019.00166",
+    "type": "Document"
+}

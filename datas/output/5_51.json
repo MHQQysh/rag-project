@@ -1,0 +1,57 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    369.39019775390625,
+                    572.5217895507812
+                ],
+                [
+                    369.39019775390625,
+                    714.6085205078125
+                ],
+                [
+                    1345.814453125,
+                    714.6085205078125
+                ],
+                [
+                    1345.814453125,
+                    572.5217895507812
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "[ 13",
+                "url": "cite.he2016deep",
+                "start_index": 229
+            },
+            {
+                "text": "[ 28 ]",
+                "url": "cite.ren2015faster",
+                "start_index": 315
+            },
+            {
+                "text": "[ 12 ]",
+                "url": "cite.he2017mask",
+                "start_index": 339
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 5,
+        "parent_id": "bb9603875915cf44e225bf8572b0d4be",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "41ebcb1b584ebd7e7186438c5a452394"
+    },
+    "page_content": "1 For each dataset, we train several models of diﬀerent sizes for diﬀerent needs (the trade-oﬀ between accuracy vs. computational cost). For “base model” and “large model”, we refer to using the ResNet 50 or ResNet 101 backbones [13], respectively. One can train models of diﬀerent architectures, like Faster R-CNN [28] (F) and Mask R-CNN [12] (M). For example, an F in the Large Model column indicates it has a Faster R-CNN model trained using the ResNet 101 backbone. The platform is maintained and a number of additions will be made to the model zoo in coming months.",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    369.6754455566406,
+                    787.1325073242188
+                ],
+                [
+                    369.6754455566406,
+                    951.911376953125
+                ],
+                [
+                    1339.9122314453125,
+                    951.911376953125
+                ],
+                [
+                    1339.9122314453125,
+                    787.1325073242188
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 10,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "5c43a35d4a42c00f3bf12ab9d90e4eab"
+    },
+    "page_content": "Fig.4: Illustration of (a) the original historical Japanese document with layout detection results and (b) a recreated version of the document image that achieves much better character recognition recall. The reorganization algorithm rearranges the tokens based on the their detected bounding boxes given a maximum allowed height.",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.7093200683594,
+                    1385.330810546875
+                ],
+                [
+                    372.7093200683594,
+                    1417.219970703125
+                ],
+                [
+                    780.5264892578125,
+                    1417.219970703125
+                ],
+                [
+                    780.5264892578125,
+                    1385.330810546875
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 6,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "836e9227ef393d8b00369e6300fbba4c"
+    },
+    "page_content": "3.2 Layout Data Structures",
+    "type": "Document"
+}

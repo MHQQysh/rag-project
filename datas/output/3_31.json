@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    374.3472222222222,
+                    1547.5797119140625
+                ],
+                [
+                    374.3472222222222,
+                    1614.1365966796875
+                ],
+                [
+                    1338.8229519242223,
+                    1614.1365966796875
+                ],
+                [
+                    1338.8229519242223,
+                    1547.5797119140625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "35",
+                "url": "cite.wu2019detectron2",
+                "start_index": 157
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "5aba687ae134a81be84e8e67fea3d6c6"
+    },
+    "page_content": "Recent years have also seen numerous eﬀorts to create libraries for promoting reproducibility and reusability in the ﬁeld of DL. Libraries like Dectectron2 [35],",
+    "type": "Document"
+}

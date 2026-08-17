@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    390.375,
+                    1634.544189453125
+                ],
+                [
+                    390.375,
+                    1693.363525390625
+                ],
+                [
+                    1334.976029048889,
+                    1693.363525390625
+                ],
+                [
+                    1334.976029048889,
+                    1634.544189453125
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 14,
+        "parent_id": "79ccc2c57c8d67f90627087e18410972",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "30ea9589817f4b7ede0ae7763c0538ee"
+    },
+    "page_content": "[5] Deng, J., Dong, W., Socher, R., Li, L.J., Li, K., Fei-Fei, L.: ImageNet: A Large-Scale Hierarchical Image Database. In: CVPR09 (2009)",
+    "type": "Document"
+}

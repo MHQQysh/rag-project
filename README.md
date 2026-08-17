@@ -1,28 +1,43 @@
-# hw-chat
-hw-chat 项目的后端服务，负责处理业务逻辑、数据存储和API接口的提供。采用稳健的后端技术，确保服务的稳定性和可扩展性。
+# RAG Project
 
-## 使用示例
+基于 LangGraph、LangChain 和 Milvus 的企业知识库 RAG 示例项目。
 
-使用 Postman 或其他 HTTP 客户端工具访问 API 接口：
+## 项目结构
 
-### POST 请求示例
+- `agent/`：RAG Agent 示例
+- `graph/`：基础 LangGraph RAG 流程
+- `graph2/`：带路由、查询改写、文档评分和幻觉检查的流程
+- `documents/`：Markdown 解析及 Milvus 写入、检索逻辑
+- `llm_models/`：LLM 与 Embedding 配置
+- `datas/md/`：知识库 Markdown 文档
+- `datas/output/`：文档解析结果
+- `docs/`：项目配套文档
 
-```http
-http://localhost:6006/api/chat/knowledge_base_chat
+## 安装
 
-{
-    "query":"什么是GLM4 多角色对话",
-    "user_id":"admin",
-    "conversation_id": "df221b2f-ea52-4200-82f5-fcfc011e6786", 
-    "conversation_name":"新对话",
-    "knowledge_base_name":"private",
-    "top_k":"3",
-    "score_threshold":"0.5",
-    "history":[],
-    "history_len": 3,
-    "stream": false,
-    "model_name":"chatglm3-6b",
-    "prompt_name":"default"
-}
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
 ```
-# rag-project
+
+在 `.env` 中配置所需的 API Key：
+
+```dotenv
+OPENAI_API_KEY=
+DEEPSEEK_API_KEY=
+MILVUS_URI=http://127.0.0.1:19530
+MILVUS_COLLECTION_NAME=t_collection01
+```
+
+导入知识文档前，还需要根据本机路径调整 `documents/write_milvus.py` 中的 `md_dir`。
+
+## 运行示例
+
+```powershell
+python -m graph.graph1
+python -m graph2.graph_2
+```
+
+`main.py` 是 IDE 创建的示例文件，不是 RAG 程序入口。

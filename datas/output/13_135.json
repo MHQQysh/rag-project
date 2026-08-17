@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.4696044921875,
+                    898.6857299804688
+                ],
+                [
+                    372.4696044921875,
+                    931.9285888671875
+                ],
+                [
+                    978.7998046875,
+                    931.9285888671875
+                ],
+                [
+                    978.7998046875,
+                    898.6857299804688
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 13,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "0e1bf4b92be7457cf36ff737a620974a"
+    },
+    "page_content": "5.2 A light-weight Visual Table Extractor",
+    "type": "Document"
+}

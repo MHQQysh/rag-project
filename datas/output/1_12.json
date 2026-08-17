@@ -1,0 +1,47 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.03887939453125,
+                    1784.759521484375
+                ],
+                [
+                    371.03887939453125,
+                    1851.4290771484375
+                ],
+                [
+                    1344.456298828125,
+                    1851.4290771484375
+                ],
+                [
+                    1344.456298828125,
+                    1784.759521484375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "11",
+                "url": "cite.harley2015evaluation",
+                "start_index": 156
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "parent_id": "daf4f418adec220713b9e9df2cf0b0b5",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "e4a996382fc52b3d32c2898006fcbacf"
+    },
+    "page_content": "Deep Learning(DL)-based approaches are the state-of-the-art for a wide range of document image analysis (DIA) tasks including document image classiﬁcation [11,",
+    "type": "Document"
+}

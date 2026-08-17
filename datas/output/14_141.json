@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    368.9842834472656,
+                    322.6180114746094
+                ],
+                [
+                    368.9842834472656,
+                    355.88141333333346
+                ],
+                [
+                    612.4149169921875,
+                    355.88141333333346
+                ],
+                [
+                    612.4149169921875,
+                    322.6180114746094
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 14,
+        "parent_id": "8de6ded63b35033992a6eb8c08debe6f",
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "2d665682ba83d4a2ef20e6084f9f50db"
+    },
+    "page_content": "6 Conclusion",
+    "type": "Document"
+}

@@ -1,0 +1,57 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.225,
+                    493.1781788888887
+                ],
+                [
+                    372.225,
+                    1086.25830078125
+                ],
+                [
+                    1342.3236083984375,
+                    1086.25830078125
+                ],
+                [
+                    1342.3236083984375,
+                    493.1781788888887
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "1",
+                "url": "cite.tensorflow2015-whitepaper",
+                "start_index": 252
+            },
+            {
+                "text": "24",
+                "url": "cite.paszke2019pytorch",
+                "start_index": 267
+            },
+            {
+                "text": "8",
+                "url": "cite.gardner2018allennlp",
+                "start_index": 347
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "parent_id": "6ef4849c6337ce11b28bcca21d06a332",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "6d80beff4eda483f3fed23a503acc81b"
+    },
+    "page_content": "However, there are several practical diﬃculties for taking advantages of re- cent advances in DL-based methods: 1) DL models are notoriously convoluted for reuse and extension. Existing models are developed using distinct frame- works like TensorFlow [1] or PyTorch [24], and the high-level parameters can be obfuscated by implementation details [8]. It can be a time-consuming and frustrating experience to debug, reproduce, and adapt existing models for DIA, and many researchers who would beneﬁt the most from using these methods lack the technical background to implement them from scratch. 2) Document images contain diverse and disparate patterns across domains, and customized training is often required to achieve a desirable detection accuracy. Currently there is no full-ﬂedged infrastructure for easily curating the target document image datasets and ﬁne-tuning or re-training the models. 3) DIA usually requires a sequence of models and other processing to obtain the ﬁnal outputs. Often research teams use DL models and then perform further document analyses in separate processes, and these pipelines are not documented in any central location (and often not documented at all). This makes it diﬃcult for research teams to learn about how full pipelines are implemented and leads them to invest signiﬁcant resources in reinventing the DIA wheel.",
+    "type": "Document"
+}

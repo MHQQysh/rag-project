@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.5749999999999,
+                    1362.8231201171875
+                ],
+                [
+                    377.5749999999999,
+                    1451.6767578125
+                ],
+                [
+                    1345.7109375,
+                    1451.6767578125
+                ],
+                [
+                    1345.7109375,
+                    1362.8231201171875
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "214954814976759f679c85d92859ae20"
+    },
+    "page_content": "[18] Li, M., Cui, L., Huang, S., Wei, F., Zhou, M., Li, Z.: Tablebank: Table benchmark for image-based table detection and recognition. arXiv preprint arXiv:1903.01949 (2019)",
+    "type": "Document"
+}

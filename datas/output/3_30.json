@@ -1,0 +1,97 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    369.80657958984375,
+                    1017.2365122222221
+                ],
+                [
+                    369.80657958984375,
+                    1544.5198974609375
+                ],
+                [
+                    1342.6783447265625,
+                    1544.5198974609375
+                ],
+                [
+                    1342.6783447265625,
+                    1017.2365122222221
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "6 ;",
+                "url": "Hfootnote.1",
+                "start_index": 175
+            },
+            {
+                "text": ",",
+                "url": "Hfootnote.2",
+                "start_index": 330
+            },
+            {
+                "text": "21",
+                "url": "cite.neudecker2011experimental",
+                "start_index": 450
+            },
+            {
+                "text": "focuses",
+                "url": "Hfootnote.3",
+                "start_index": 589
+            },
+            {
+                "text": "on",
+                "url": "Hfootnote.4",
+                "start_index": 774
+            },
+            {
+                "text": "stored PDF data . Repositories like DeepLayout9 and Detectron2 - PubLayNet10",
+                "url": "Hfootnote.5",
+                "start_index": 656
+            },
+            {
+                "text": "15",
+                "url": "cite.lamiroy2011open",
+                "start_index": 900
+            },
+            {
+                "text": "2",
+                "url": "cite.alberti2018deepdiva",
+                "start_index": 930
+            },
+            {
+                "text": "14",
+                "url": "cite.tesseract",
+                "start_index": 1065
+            },
+            {
+                "text": "and",
+                "url": "Hfootnote.6",
+                "start_index": 1080
+            },
+            {
+                "text": "usually",
+                "url": "Hfootnote.7",
+                "start_index": 1096
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "444f0c60c851ab958af9c6de3af315f2"
+    },
+    "page_content": "There has been a surge of interest in creating open-source tools for document image processing: a search of document image analysis in Github leads to 5M relevant code pieces 6; yet most of them rely on traditional rule-based methods or provide limited functionalities. The closest prior research to our work is the OCR-D project7, which also tries to build a complete toolkit for DIA. However, similar to the platform developed by Neudecker et al. [21], it is designed for analyzing historical documents, and provides no supports for recent DL models. The DocumentLayoutAnalysis project8 focuses on processing born-digital PDF documents via analyzing the stored PDF data. Repositories like DeepLayout9 and Detectron2-PubLayNet10 are individual deep learning models trained on layout analysis datasets without support for the full DIA pipeline. The Document Analysis and Exploitation (DAE) platform [15] and the DeepDIVA project [2] aim to improve the reproducibility of DIA methods (or DL models), yet they are not actively maintained. OCR engines like Tesseract [14], easyOCR11 and paddleOCR12 usually do not come with comprehensive functionalities for other DIA tasks like layout analysis.",
+    "type": "Document"
+}

@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.84710693359375,
+                    719.8275146484375
+                ],
+                [
+                    372.84710693359375,
+                    753.9226684570312
+                ],
+                [
+                    1297.7301025390625,
+                    753.9226684570312
+                ],
+                [
+                    1297.7301025390625,
+                    719.8275146484375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 11,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "b737ef6390c63dfa649bfad32df8ceb4"
+    },
+    "page_content": "5.1 A Comprehensive Historical Document Digitization Pipeline",
+    "type": "Document"
+}

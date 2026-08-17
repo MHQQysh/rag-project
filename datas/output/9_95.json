@@ -1,0 +1,51 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    370.1391296386719,
+                    1552.5523681640625
+                ],
+                [
+                    370.1391296386719,
+                    1850.189208984375
+                ],
+                [
+                    1342.6727294921875,
+                    1850.189208984375
+                ],
+                [
+                    1342.6727294921875,
+                    1552.5523681640625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "33",
+                "url": "cite.studer2019comprehensive",
+                "start_index": 429
+            },
+            {
+                "text": "5",
+                "url": "cite.imagenet_cvpr09",
+                "start_index": 501
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 9,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "305aaf5d37588f948ab16e9854bc32ed"
+    },
+    "page_content": "After the training dataset is curated, LayoutParser supports diﬀerent modes for training the layout models. Fine-tuning can be used for training models on a small newly-labeled dataset by initializing the model with existing pre-trained weights. Training from scratch can be helpful when the source dataset and target are signiﬁcantly diﬀerent and a large training set is available. However, as suggested in Studer et al.’s work[33], loading pre-trained weights on large-scale datasets like ImageNet [5], even from totally diﬀerent domains, can still boost model performance. Through the integrated API provided by LayoutParser, users can easily compare model performances on the benchmark datasets.",
+    "type": "Document"
+}

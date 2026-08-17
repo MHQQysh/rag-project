@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    351.09166666666664,
+                    1464.9417724609375
+                ],
+                [
+                    351.09166666666664,
+                    1553.6951904296875
+                ],
+                [
+                    1098.494384765625,
+                    1553.6951904296875
+                ],
+                [
+                    1098.494384765625,
+                    1464.9417724609375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 7,
+        "filename": "layout-parser-paper.pdf",
+        "category": "CodeSnippet",
+        "element_id": "45187c280bb7863b67802e3e719bfd29"
+    },
+    "page_content": "1 ocr_agent = lp.TesseractAgent() 2 # Can be easily switched to other OCR software 3 tokens = ocr_agent.detect(image)",
+    "type": "Document"
+}

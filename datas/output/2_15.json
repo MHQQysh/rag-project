@@ -1,0 +1,67 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    365.3841857910156,
+                    322.9581604003906
+                ],
+                [
+                    365.3841857910156,
+                    491.4158935546875
+                ],
+                [
+                    1349.5447998046875,
+                    491.4158935546875
+                ],
+                [
+                    1349.5447998046875,
+                    322.9581604003906
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "37",
+                "url": "cite.xu2019layoutlm",
+                "start_index": 0
+            },
+            {
+                "text": "38",
+                "url": "cite.zhong2019publaynet",
+                "start_index": 23
+            },
+            {
+                "text": "22",
+                "url": "cite.oliveira2018dhsegment",
+                "start_index": 27
+            },
+            {
+                "text": "26",
+                "url": "cite.prasad2020cascadetabnet",
+                "start_index": 49
+            },
+            {
+                "text": "4",
+                "url": "cite.baek2019character",
+                "start_index": 80
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "parent_id": "6ef4849c6337ce11b28bcca21d06a332",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "70f1e6dfa4e6de0b31ea77f7cdd27ca2"
+    },
+    "page_content": "37], layout detection [38, 22], table detection [26], and scene text detection [4]. A generalized learning-based framework dramatically reduces the need for the manual speciﬁcation of complicated rules, which is the status quo with traditional methods. DL has the potential to transform DIA pipelines and beneﬁt a broad spectrum of large-scale document digitization projects.",
+    "type": "Document"
+}

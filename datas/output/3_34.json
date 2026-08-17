@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    378.959228515625,
+                    1695.7223733333333
+                ],
+                [
+                    378.959228515625,
+                    1727.7252197265625
+                ],
+                [
+                    1005.8629760742188,
+                    1727.7252197265625
+                ],
+                [
+                    1005.8629760742188,
+                    1695.7223733333333
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "780c4bd8fb19c524b7da50acde7fa81e"
+    },
+    "page_content": "8 https://github.com/BobLd/DocumentLayoutAnalysis",
+    "type": "Document"
+}

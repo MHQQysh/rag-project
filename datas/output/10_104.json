@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    373.35,
+                    1784.8953857421875
+                ],
+                [
+                    373.35,
+                    1851.5821533203125
+                ],
+                [
+                    1343.3785400390625,
+                    1851.5821533203125
+                ],
+                [
+                    1343.3785400390625,
+                    1784.8953857421875
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 10,
+        "parent_id": "dce66025c40567da68fd7370506997e1",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "0dfe18d94b2a87db18d0a45d434b1cb0"
+    },
+    "page_content": "The core objective of LayoutParser is to make it easier to create both large-scale and light-weight document digitization pipelines. Large-scale document processing",
+    "type": "Document"
+}

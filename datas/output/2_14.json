@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    463.769287109375,
+                    255.61917114257812
+                ],
+                [
+                    463.769287109375,
+                    282.84521484375
+                ],
+                [
+                    619.0444946289062,
+                    282.84521484375
+                ],
+                [
+                    619.0444946289062,
+                    255.61917114257812
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Header",
+        "element_id": "6ef4849c6337ce11b28bcca21d06a332"
+    },
+    "page_content": "Z. Shen et al.",
+    "type": "Document"
+}

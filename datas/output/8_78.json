@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    373.95538330078125,
+                    1126.3336181640625
+                ],
+                [
+                    373.95538330078125,
+                    1158.50048828125
+                ],
+                [
+                    802.85986328125,
+                    1158.50048828125
+                ],
+                [
+                    802.85986328125,
+                    1126.3336181640625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 8,
+        "parent_id": "3bb37678da59898b7785d0f518a10209",
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "cab37dd4fa2d6ccd9bc0cf0c6b332a9d"
+    },
+    "page_content": "3.4 Storage and visualization",
+    "type": "Document"
+}

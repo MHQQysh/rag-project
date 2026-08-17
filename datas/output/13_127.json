@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    425.3589172363281,
+                    631.4266967773438
+                ],
+                [
+                    425.3589172363281,
+                    646.948486328125
+                ],
+                [
+                    562.1032104492188,
+                    646.948486328125
+                ],
+                [
+                    562.1032104492188,
+                    631.4266967773438
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 13,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "bd1d4200edd76409612707f2dd66f7b2"
+    },
+    "page_content": "() Partial table at the botiom",
+    "type": "Document"
+}

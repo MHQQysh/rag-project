@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.81111111111113,
+                    1787.0445955555554
+                ],
+                [
+                    371.81111111111113,
+                    1848.62646484375
+                ],
+                [
+                    1348.141845703125,
+                    1848.62646484375
+                ],
+                [
+                    1348.141845703125,
+                    1787.0445955555554
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 12,
+        "parent_id": "f31734a5244065a58be3510fa8782136",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "5e1b36a363535de304c44fabee2b49bf"
+    },
+    "page_content": "17 This measures the number of edits from the ground-truth text to the predicted text, and lower is better.",
+    "type": "Document"
+}

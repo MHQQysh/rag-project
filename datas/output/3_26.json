@@ -1,0 +1,56 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    367.95465087890625,
+                    325.7200927734375
+                ],
+                [
+                    367.95465087890625,
+                    489.6036376953125
+                ],
+                [
+                    1346.0673828125,
+                    489.6036376953125
+                ],
+                [
+                    1346.0673828125,
+                    325.7200927734375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "5",
+                "url": "section.1.5",
+                "start_index": 155
+            },
+            {
+                "text": "37",
+                "url": "cite.xu2019layoutlm",
+                "start_index": 301
+            },
+            {
+                "text": "34",
+                "url": "cite.wolf2019huggingface",
+                "start_index": 305
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "55a444b43a4d07fbde2ee82d3ec8a32a"
+    },
+    "page_content": "that require precision, eﬃciency, and robustness, as well as simple and light- weight document processing tasks focusing on eﬃcacy and ﬂexibility (Section 5). LayoutParser is being actively maintained, and support for more deep learning models and novel methods in text-based layout analysis methods [37, 34] is planned.",
+    "type": "Document"
+}

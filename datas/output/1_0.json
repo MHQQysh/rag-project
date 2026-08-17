@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    436.5199890136719,
+                    314.07989501953125
+                ],
+                [
+                    436.5199890136719,
+                    411.07293701171875
+                ],
+                [
+                    1271.4886007777775,
+                    411.07293701171875
+                ],
+                [
+                    1271.4886007777775,
+                    314.07989501953125
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "b7f58c2fd9c15949a55a62eb84e39575"
+    },
+    "page_content": "LayoutParser: A Uniﬁed Toolkit for Deep Learning Based Document Image Analysis",
+    "type": "Document"
+}

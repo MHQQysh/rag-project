@@ -1,0 +1,39 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    372.3030090332031,
+                    1053.0455322265625
+                ],
+                [
+                    372.3030090332031,
+                    1083.4775390625
+                ],
+                [
+                    800.9155883789062,
+                    1083.4775390625
+                ],
+                [
+                    800.9155883789062,
+                    1053.0455322265625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 5,
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "9e349da0d3169a69ebef29f87c80aa84"
+    },
+    "page_content": "3.1 Layout Detection Models",
+    "type": "Document"
+}

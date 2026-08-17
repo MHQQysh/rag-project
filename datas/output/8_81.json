@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    373.2007141113281,
+                    1603.99267578125
+                ],
+                [
+                    373.2007141113281,
+                    1636.7078857421875
+                ],
+                [
+                    841.9977416992188,
+                    1636.7078857421875
+                ],
+                [
+                    841.9977416992188,
+                    1603.99267578125
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 8,
+        "parent_id": "3bb37678da59898b7785d0f518a10209",
+        "filename": "layout-parser-paper.pdf",
+        "category": "Title",
+        "element_id": "fef19a8f957fb7a15a620f603affa7eb"
+    },
+    "page_content": "3.5 Customized Model Training",
+    "type": "Document"
+}

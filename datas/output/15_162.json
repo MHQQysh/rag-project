@@ -1,0 +1,56 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    377.575,
+                    1028.1484375
+                ],
+                [
+                    377.575,
+                    1211.5804443359375
+                ],
+                [
+                    1346.385498046875,
+                    1211.5804443359375
+                ],
+                [
+                    1346.385498046875,
+                    1028.1484375
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "https :// doi . org / 10 . 1145 / 3379350 . 3416143",
+                "url": "https://doi.org/10.1145/3379350.3416143",
+                "start_index": 288
+            },
+            {
+                "text": "https :// doi - org . offcampus .",
+                "url": "https://doi-org.offcampus.lib.washington.edu/10.1145/3379350.3416143",
+                "start_index": 329
+            },
+            {
+                "text": "lib . washington . edu / 10 . 1145 / 3379350 . 3416143",
+                "url": "https://doi-org.offcampus.lib.washington.edu/10.1145/3379350.3416143",
+                "start_index": 356
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 15,
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "9d4cc89511bcd1bc0d182eb5001c673c"
+    },
+    "page_content": "[16] Lee, B.C., Weld, D.S.: Newspaper navigator: Open faceted search for 1.5 million images. In: Adjunct Publication of the 33rd Annual ACM Sym- posium on User Interface Software and Technology. p. 120–122. UIST ’20 Adjunct, Association for Computing Machinery, New York, NY, USA (2020). https://doi.org/10.1145/3379350.3416143, https://doi-org.offcampus. lib.washington.edu/10.1145/3379350.3416143",
+    "type": "Document"
+}

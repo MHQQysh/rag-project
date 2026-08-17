@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    575.6388888888889,
+                    684.4668177777777
+                ],
+                [
+                    575.6388888888889,
+                    747.6932983398438
+                ],
+                [
+                    1138.8021240234375,
+                    747.6932983398438
+                ],
+                [
+                    1138.8021240234375,
+                    684.4668177777777
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "parent_id": "693da13bf21981fa8e5afdd9a1eb42a2",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "a872590b7ff4b622d33de4fe628d1415"
+    },
+    "page_content": "3 Harvard University {melissadell,jacob carlson}@fas.harvard.edu",
+    "type": "Document"
+}

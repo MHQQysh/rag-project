@@ -1,0 +1,57 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    366.884521484375,
+                    1105.1939697265625
+                ],
+                [
+                    366.884521484375,
+                    1502.5006103515625
+                ],
+                [
+                    1338.8087062377779,
+                    1502.5006103515625
+                ],
+                [
+                    1338.8087062377779,
+                    1105.1939697265625
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "links": [
+            {
+                "text": "6",
+                "url": "cite.deng2017image",
+                "start_index": 766
+            },
+            {
+                "text": "model detects a total of 15 possible categories , and achieves a 0 . 98 Jaccard score16",
+                "url": "Hfootnote.11",
+                "start_index": 774
+            },
+            {
+                "text": "for",
+                "url": "Hfootnote.12",
+                "start_index": 901
+            }
+        ],
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 12,
+        "parent_id": "f31734a5244065a58be3510fa8782136",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "4bfe3f821f1f4e2d3fccd4214bedbca6"
+    },
+    "page_content": "Additionally, it is common for historical documents to use unique fonts with diﬀerent glyphs, which signiﬁcantly degrades the accuracy of OCR models trained on modern texts. In this document, a special ﬂat font is used for printing numbers and could not be detected by oﬀ-the-shelf OCR engines. Using the highly ﬂexible functionalities from LayoutParser, a pipeline approach is constructed that achieves a high recognition accuracy with minimal eﬀort. As the characters have unique visual structures and are usually clustered together, we train the layout model to identify number regions with a dedicated category. Subsequently, LayoutParser crops images within these regions, and identiﬁes characters within them using a self-trained OCR model based on a CNN-RNN [6]. The model detects a total of 15 possible categories, and achieves a 0.98 Jaccard score16 and a 0.17 average Levinstein distances17 for token prediction on the test set.",
+    "type": "Document"
+}

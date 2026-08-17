@@ -1,0 +1,40 @@
+{
+    "id": null,
+    "metadata": {
+        "source": "E:\\my_project\\RAG_PROJECT\\datas\\layout-parser-paper.pdf",
+        "coordinates": {
+            "points": [
+                [
+                    371.0390625,
+                    1756.6057066666665
+                ],
+                [
+                    371.0390625,
+                    1788.6812744140625
+                ],
+                [
+                    886.6859741210938,
+                    1788.6812744140625
+                ],
+                [
+                    886.6859741210938,
+                    1756.6057066666665
+                ]
+            ],
+            "system": "PixelSpace",
+            "layout_width": 1700,
+            "layout_height": 2200
+        },
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 3,
+        "parent_id": "1650df2ec652f03c0d446640c4b1c6ca",
+        "filename": "layout-parser-paper.pdf",
+        "category": "NarrativeText",
+        "element_id": "5538e077704d36f41ec219631e105c76"
+    },
+    "page_content": "10 https://github.com/hpanwar08/detectron2",
+    "type": "Document"
+}
