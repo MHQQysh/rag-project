@@ -13,3 +13,11 @@
 尚未使用真实付费 Key 验证网页版成功生成链路；用户在页面输入自己的 Key 后可运行。没有把历史本地 DeepSeek 成功记录当作本版成功证据。对模型调用存在延迟、额度、限流和网络条件的依赖。
 
 构建：进入 web 执行 `npm ci`、`npm run build`。产物只包含静态 app、同源 sql.js 与许可、公开样本和讲解文档。
+
+## 首次公网发布
+
+提交 `d83d772` 的 [GitHub Actions 运行](https://github.com/MHQQysh/rag-project/actions/runs/36553465239) 构建、测试与部署均成功。已启用 Pages 的 Actions 来源和 HTTPS。
+
+实际地址为 https://shihongyuan.cn/rag-project/db-gpt-commerce/ ，沿用账号原有自定义域名；github.io 地址会跳转。HTTP 检查确认页面、所有运行模块、数据库、WASM 和讲解文档正常返回；运行模块和资源与本地构建逐字节一致，讲解 HTML 仅有 Git 行尾规范化差异。
+
+最后的公网页面浏览器检查因自动化连接中断未完成；上述浏览器交互通过记录来自同一构建的本地 HTTP 子路径。下载按钮已实现，但自动化下载回执也因连接中断未能取得；不计为已验证的交互项。

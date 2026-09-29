@@ -10,7 +10,7 @@ Python 完整版保留 DB-GPT 官方服务与 AWEL，用于本地学习和后续
 
 仓库 Settings → Pages → Build and deployment → Source 选择 GitHub Actions。Actions 中运行 `Deploy commerce analysis to Pages`；后续 main 分支中本子项目变更会自动构建部署。若提示 Pages 未启用，先完成上述设置，再重新运行工作流。
 
-目标地址：`https://mhqqysh.github.io/rag-project/db-gpt-commerce/`。这是配置对应的目标地址，是否已上线以 GitHub Actions 的成功部署记录为准。
+已发布地址：`https://shihongyuan.cn/rag-project/db-gpt-commerce/`。账号已有自定义域名，`https://mhqqysh.github.io/rag-project/db-gpt-commerce/` 会跳转到该地址。首轮 GitHub Actions 构建和部署成功，已启用 HTTPS。
 
 工作流使用 Node.js 22，通过 `npm ci` 和 `npm run build` 运行测试并构建。只上传 `web/dist`；现有两个 Python RAG 项目不会变成可运行的 Pages 后端，也不会被工作流部署。
 

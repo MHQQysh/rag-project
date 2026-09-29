@@ -26,3 +26,7 @@
 Verification commands: `npm ci`; `npm test` in db-gpt-commerce/web. Python exporter uses standard library plus local commerce modules only. Expected East China July/August net delta is -9900000 cents, factors [-4480000,-3277500,-1342500,-800000]. Network tests use fake test tokens and never real credentials. Production model validation requires user-entered Key.
 
 Execution proceeds inline under existing user authorization; no additional execution-choice approval is needed.
+
+## Outcome
+
+Sibling project implemented and pushed to main; initial deployment run 36553465239 succeeded. Ten Node tests pass, all four Python numerical comparisons pass. Local browser baseline and invalid-Key behavior verified; public static resources match the build. Pages and HTTPS enabled. Real paid-key success, online browser interaction, download receipt, and exhaustive cancellation/timeout UI tests remain unverified; no claim of those checks passing. No new backend server was needed for the static simulation app; Windows backend retained with deployment guidance.
