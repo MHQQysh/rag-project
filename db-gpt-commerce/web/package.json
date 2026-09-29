@@ -1,0 +1,12 @@
+{
+  "name": "commerce-analysis-pages",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "assets": "node scripts/copy-assets.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build": "npm run assets && npm test && node scripts/build.mjs"
+  },
+  "dependencies": {"sql.js": "1.14.1"}
+}

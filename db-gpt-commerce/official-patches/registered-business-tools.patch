@@ -1,0 +1,39 @@
+diff --git a/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/agentic_data_api.py b/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/agentic_data_api.py
+index a132d2f..056b98f 100644
+--- a/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/agentic_data_api.py
++++ b/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/agentic_data_api.py
+@@ -2940,6 +2940,21 @@ Thought/Action/Action Input format shown above.
+         pass  # graceful degradation
+     # --- End connector system prompt injection ---
+ 
++    # ResourceManager tools are executable in ToolPack, but a custom workflow
++    # prompt replaces the default resource prompt. Describe them explicitly so
++    # the planner can discover registered domain tools as well as built-ins.
++    if business_tools:
++        business_prompts = []
++        for business_tool in business_tools:
++            description, _ = await business_tool.get_prompt(lang="zh")
++            business_prompts.append(description)
++        workflow_prompt += (
++            "\n\n## Registered business tools\n"
++            "Prefer an applicable domain-specific tool with a verified metric "
++            "contract over reconstructing that same analysis with generic SQL.\n"
++            + "\n".join(business_prompts)
++        )
++
+     # Convert workflow_prompt to PromptTemplate so it is used as system prompt
+     # Use jinja2 format to avoid issues with JSON braces { } in the prompt
+     workflow_prompt_template = PromptTemplate(
+diff --git a/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/tools/execute_tool.py b/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/tools/execute_tool.py
+index dd803f0..6baf303 100644
+--- a/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/tools/execute_tool.py
++++ b/packages/dbgpt-app/src/dbgpt_app/openapi/api_v1/tools/execute_tool.py
+@@ -14,7 +14,7 @@ def make_execute_tool(react_state: Dict[str, Any]):
+     async def execute_tool(tool_name: str, args: dict) -> str:
+         from dbgpt._private.config import Config
+         from dbgpt.agent.resource.manage import get_resource_manager
+-        from dbgpt.agent.resource.resource_api import AgentResource, ResourceType
++        from dbgpt.agent.resource.base import AgentResource, ResourceType
+         from dbgpt.agent.resource.tool.pack import ToolPack
+ 
+         CFG = Config()

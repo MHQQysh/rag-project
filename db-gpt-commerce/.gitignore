@@ -1,0 +1,14 @@
+.venv/
+.official-venv/
+official-data/
+.env
+vendor/
+data/
+artifacts/
+__pycache__/
+.pytest_cache/
+*.log
+*.pid
+node_modules/
+web/vendor/
+web/dist/

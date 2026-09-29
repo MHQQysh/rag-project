@@ -1,0 +1,30 @@
+[system]
+language = "zh"
+api_keys = []
+encrypt_key = "${env:DBGPT_ENCRYPT_KEY}"
+
+[service.web]
+host = "127.0.0.1"
+port = 5670
+new_web_ui = true
+cors_allowed_origins = "http://127.0.0.1:5670,http://localhost:5670"
+
+[service.web.database]
+type = "sqlite"
+path = "pilot/meta_data/dbgpt.db"
+
+[service.model.worker]
+host = "127.0.0.1"
+
+[rag.storage.vector]
+type = "chroma"
+persist_path = "pilot/data"
+
+[models]
+[[models.llms]]
+name = "deepseek-flash"
+provider = "proxy/deepseek"
+api_key = "${env:OPENAI_API_KEY}"
+api_base = "${env:OPENAI_BASE_URL}"
+thinking_enabled = false
+context_length = 65536

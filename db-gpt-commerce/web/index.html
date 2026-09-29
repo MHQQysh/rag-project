@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; connect-src 'self' https://api.deepseek.com; worker-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Commerce Lens · 电商经营分析</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="./"
+        ><span class="brand-mark">C</span
+        ><span>Commerce Lens<small>经营分析工作台</small></span></a
+      >
+      <div class="nav-label">WORKSPACE</div>
+      <nav>
+        <a class="selected" href="#workspace">◈　经营分析</a
+        ><a href="#evidence">≡　SQL 与执行依据</a
+        ><a href="#architecture">⌘　代码逻辑</a
+        ><a href="./guide/项目讲解.html" target="_blank" rel="noopener"
+          >↗　完整讲解文档</a
+        >
+      </nav>
+      <div class="sidebar-foot">
+        <b>DB-GPT 业务逻辑移植版</b>
+        <p>浏览器内计算 · 公开模拟数据<br />完整 Python 版源码随项目提供</p>
+        <a
+          href="https://github.com/MHQQysh/rag-project/tree/main/db-gpt-commerce"
+          target="_blank"
+          rel="noopener"
+          >查看 GitHub 项目 ↗</a
+        >
+      </div>
+    </aside>
+    <main id="workspace">
+      <header>
+        <div>
+          <span class="breadcrumb">工作空间 / 电商经营分析</span>
+          <h1>看见变化，也看清依据。</h1>
+          <p class="subtitle">
+            从订单明细到收入贡献，让每一个结论都有可检查的计算过程。
+          </p>
+        </div>
+        <span class="badge">●　模拟数据演示</span>
+      </header>
+      <section class="panel request-panel">
+        <div class="section-top">
+          <div>
+            <span class="eyebrow">NEW ANALYSIS</span>
+            <h2>本月收入，发生了什么？</h2>
+          </div>
+          <span class="muted">01 / 选择分析范围</span>
+        </div>
+        <p id="question" class="question">
+          分析 2026 年 8
+          月华东地区净收入变化，拆解订单量、渠道结构、渠道内客单价和退款贡献。
+        </p>
+        <div class="controls">
+          <label
+            >分析地区<select id="region">
+              <option>华东</option>
+              <option>华北</option>
+            </select></label
+          ><label
+            >分析月份<select id="month">
+              <option value="2026-08">2026 年 8 月 vs 7 月</option>
+              <option value="2026-07">2026 年 7 月 vs 6 月</option>
+            </select></label
+          >
+          <div class="actions">
+            <button id="baseline" class="secondary">运行基准演示</button
+            ><button id="live" class="primary">使用 DeepSeek 分析 ↗</button
+            ><button id="cancel" class="secondary" hidden>取消</button>
+          </div>
+        </div>
+        <details class="settings" id="settings">
+          <summary>
+            DeepSeek 连接设置 <span>输入自己的 API Key，开启真实 SQL 生成</span>
+          </summary>
+          <div class="settings-grid">
+            <label
+              >API Key<input
+                id="api-key"
+                type="password"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="仅在当前页面内存中使用" /></label
+            ><label
+              >模型<select id="model">
+                <option value="deepseek-flash">DeepSeek Flash</option>
+                <option value="deepseek-v4-pro">DeepSeek V4 Pro</option>
+              </select></label
+            ><button id="clear-key" class="secondary">清除 Key</button>
+          </div>
+          <p class="fine">
+            Key 仅发送给 api.deepseek.com，不保存到浏览器存储或
+            GitHub。真实分析会消耗你账户的 API
+            额度。刷新页面后需重新输入；基准演示无需 Key。
+          </p>
+        </details>
+        <div id="status" class="status" role="status" aria-live="polite">
+          正在加载公开模拟数据库…
+        </div>
+        <ol id="steps" class="steps">
+          <li>① 固定口径</li>
+          <li>② 生成 SQL</li>
+          <li>③ 明细核验</li>
+          <li>④ 贡献分解</li>
+        </ol>
+      </section>
+      <section id="empty" class="empty">
+        <span class="empty-symbol">↗</span>
+        <h2>先跑一次，理解整条分析链路。</h2>
+        <p>
+          点击“运行基准演示”，无需密钥即可查看真实计算结果。<br />接入 DeepSeek
+          后，SQL 由模型生成，仍需通过同一套独立明细核验。
+        </p>
+        <div class="mini-flow">
+          <span>订单与退款</span><i>→</i><span>查询与核验</span><i>→</i
+          ><span>贡献与报告</span>
+        </div>
+      </section>
+      <div id="results" hidden>
+        <div class="result-heading">
+          <div>
+            <span class="eyebrow">VERIFIED RESULT</span>
+            <h2 id="result-title">分析结果</h2>
+          </div>
+          <button id="download" class="secondary">下载计算证据 ↓</button>
+        </div>
+        <div id="metrics" class="metrics"></div>
+        <div class="analysis-grid">
+          <section class="panel">
+            <div class="section-top">
+              <h2>净收入变化贡献</h2>
+              <span class="muted">金额 / 元</span>
+            </div>
+            <p id="delta-summary"></p>
+            <div id="factors"></div>
+            <p class="fine">
+              订单量 × Σ（渠道订单占比 × 渠道内客单价）− 当月成功退款
+            </p>
+            <p id="reconciliation" class="verified"></p>
+          </section>
+          <section class="panel insights">
+            <span class="eyebrow">READ THE NUMBERS</span>
+            <h2>怎样读这份结果</h2>
+            <div id="insights"></div>
+            <p class="fine">
+              算术贡献不等于因果。流量、促销、质量等原因需要额外证据，当前数据不能验证。
+            </p>
+          </section>
+        </div>
+        <section class="panel">
+          <div class="section-top">
+            <h2>渠道结构与经营明细</h2>
+            <span class="muted">上期 → 本期</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>渠道</th>
+                  <th>支付订单</th>
+                  <th>订单占比</th>
+                  <th>渠道客单价</th>
+                  <th>实付金额</th>
+                  <th>成功退款</th>
+                </tr>
+              </thead>
+              <tbody id="channel-rows"></tbody>
+            </table>
+          </div>
+          <p id="imputation" class="fine"></p>
+        </section>
+      </div>
+      <section id="evidence" class="panel">
+        <div class="section-top">
+          <div>
+            <span class="eyebrow">AUDIT TRAIL</span>
+            <h2>结果是怎样得到的</h2>
+          </div>
+          <span class="muted">02 / SQL 与证据</span>
+        </div>
+        <p class="fine">
+          收入按支付月，退款按成功发生月；地区取订单收货快照。订单与退款分别汇总，避免多表连接重复计数。
+        </p>
+        <div id="attempts">
+          <p class="muted">运行后可查看每一次 SQL、核验状态与错误原因。</p>
+        </div>
+        <details>
+          <summary>查看模拟数据库与来源</summary>
+          <pre id="provenance">加载中…</pre>
+        </details>
+      </section>
+      <section id="architecture" class="panel">
+        <span class="eyebrow">UNDER THE HOOD</span>
+        <h2>整个项目，其实只有这几层</h2>
+        <div class="architecture-grid">
+          <div>
+            <b>① 窗口与调度</b>
+            <p>
+              这里收集地区和月份，展示运行进度。本地完整版由官方 DB-GPT Agent
+              选择工具；网页版直接运行专用流程。
+            </p>
+            <code>app.mjs / official_integration.py</code>
+          </div>
+          <div>
+            <b>② 模型写查询</b>
+            <p>
+              DeepSeek 接收表结构与指标规则，返回候选
+              SQL。模型不直接计算报告中的金额。
+            </p>
+            <code>model.mjs / workflow.py</code>
+          </div>
+          <div>
+            <b>③ 程序核对数据</b>
+            <p>
+              SQL 在浏览器 SQLite
+              中运行，再用逐条订单和退款计算核对。未通过则最多修复一次，仍失败就停止。
+            </p>
+            <code>query-worker.js / query.py</code>
+          </div>
+          <div>
+            <b>④ 程序计算贡献</b>
+            <p>
+              按六种替换顺序求平均边际变化，用精确分数确保贡献加总等于净收入变化，最后生成展示与证据。
+            </p>
+            <code>core.mjs / analysis.py</code>
+          </div>
+        </div>
+        <p class="fine">
+          这个网页无需自建后端。它是受限场景的浏览器移植版，不运行 Python
+          AWEL，也不接入企业私有数据。完整官方版与服务器部署说明见项目 README。
+        </p>
+      </section>
+      <footer>
+        Commerce Lens · 可复算的经营分析作品　<span
+          >公开模拟数据 2026.06 — 2026.08</span
+        >
+      </footer>
+    </main>
+  </body>
+</html>
