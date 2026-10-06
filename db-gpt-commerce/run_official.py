@@ -29,7 +29,9 @@ for source in source_pilot.rglob("*"):
 
 if __name__ == "__main__":
     import dbgpt_app.dbgpt_server as server
+    from commerce.cloud_runtime import configure_code_server
     from commerce.official_integration import install
 
+    configure_code_server()
     install(server)
     server.run_webserver(str(ROOT / "official.toml"))

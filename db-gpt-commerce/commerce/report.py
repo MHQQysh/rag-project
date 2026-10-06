@@ -12,12 +12,23 @@ ARTIFACTS = ROOT / "artifacts"
 
 
 def upstream_commit():
+    vendor = ROOT / "vendor/DB-GPT"
     try:
-        return subprocess.check_output(
-            ["git", "-C", str(ROOT / "vendor/DB-GPT"), "rev-parse", "HEAD"], text=True, timeout=5
+        checkout = subprocess.check_output(
+            ["git", "-C", str(vendor), "rev-parse", "--show-toplevel"],
+            text=True, timeout=5, stderr=subprocess.DEVNULL,
         ).strip()
-    except (OSError, subprocess.SubprocessError):
-        return "unavailable"
+        if Path(checkout).resolve() != vendor.resolve():
+            raise ValueError("Vendor is an exported source bundle, not its parent repository")
+        return subprocess.check_output(
+            ["git", "-C", str(vendor), "rev-parse", "HEAD"], text=True, timeout=5,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.SubprocessError, ValueError):
+        # A release archive has no .git; the packager records its source revision.
+        manifest = vendor / "UPSTREAM_COMMIT"
+        revision = manifest.read_text(encoding="utf-8").strip() if manifest.exists() else ""
+        return revision if len(revision) == 40 and all(c in "0123456789abcdef" for c in revision) else "unavailable"
 
 
 def provenance(path):

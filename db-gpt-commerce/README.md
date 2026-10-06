@@ -4,6 +4,8 @@
 
 **[打开网页版](https://mhqqysh.github.io/rag-project/db-gpt-commerce/)** · **[部署与后端说明](DEPLOYMENT.md)** · **[逻辑讲解](docs/项目讲解/项目讲解.html)** · **[本地官方版安装](LOCAL_README.md)**
 
+新增：[与 DeerFlow 的架构及代码对比](docs/项目讲解/06%20DeerFlow与DB-GPT对比.md) · [同服务器部署与维护](CLOUD_DEPLOYMENT.md) · [云端验收记录](CLOUD_VALIDATION.md)。官方云端版和 GitHub Pages 浏览器版是独立入口；云端域名暂缓配置，当前通过 SSH 隧道访问。
+
 ## 先用起来
 
 网页版点击“运行基准演示”，不用 Key 即可查看真实计算的订单、退款和贡献。展开 DeepSeek 设置，输入自己的 API Key，再点击“使用 DeepSeek 分析”，调用真实模型生成 SQL；结果必须通过独立明细核验，失败最多修复一次。Key 只存在当前页面内存，不保存到 GitHub 或浏览器本地存储。

@@ -1,6 +1,7 @@
 """Register the verified commerce workflow in the upstream DB-GPT agent toolbox."""
 
 import json
+import os
 import shutil
 
 from dbgpt.agent.resource.tool.base import tool
@@ -37,7 +38,8 @@ async def analyze_commerce_revenue(region: str = "华东", as_of: str = "2026-09
         question=f"上个月{region}地区收入变化，分析订单量、客单价、退款和渠道结构贡献，并输出计算依据。",
     )
     result = await run_analysis(request, path=OFFICIAL_DB)
-    base = f"http://127.0.0.1:5670/commerce/reports/{result['run_id']}"
+    origin = os.environ.get("COMMERCE_PUBLIC_BASE_URL", "").rstrip("/")
+    base = f"{origin}/commerce/reports/{result['run_id']}"
     a = result["analysis"]
     return json.dumps(
         {

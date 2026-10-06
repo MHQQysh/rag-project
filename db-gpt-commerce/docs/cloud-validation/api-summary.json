@@ -1,0 +1,42 @@
+{
+  "http_status": 200,
+  "conversation_id": "fa1d7584-0de8-4df0-8603-79ff938b3f1a",
+  "elapsed_seconds": 10.01,
+  "events": {
+    "context.status": 3,
+    "step.start": 5,
+    "task.preview": 1,
+    "step.meta": 3,
+    "step.chunk": 8,
+    "step.done": 2,
+    "final": 1,
+    "done": 1
+  },
+  "business_tool_mentioned": true,
+  "html_render_mentioned": true,
+  "analysis_runs": [
+    {
+      "run_id": "a706b9b196ed4883bd5dd71e4a4047f7",
+      "status": "verified",
+      "mode": "live",
+      "sql_attempts": 1,
+      "delta_cents": -9900000,
+      "reconciliation_cents": 0.0,
+      "upstream_commit": "ca9f014cb3ead157ca2ee6ce645658f5fb55138c",
+      "downloads": {
+        "report.html": {
+          "status": 200,
+          "bytes": 6682
+        },
+        "evidence.json": {
+          "status": 200,
+          "bytes": 17703
+        },
+        "bundle.zip": {
+          "status": 200,
+          "bytes": 8574
+        }
+      }
+    }
+  ]
+}
