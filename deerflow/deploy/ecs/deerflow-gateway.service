@@ -1,0 +1,17 @@
+[Unit]
+Description=Original DeerFlow Gateway and Agent Runtime
+After=network-online.target docker.service redis-server.service
+Requires=redis-server.service
+[Service]
+WorkingDirectory=/opt/deerflow/backend
+EnvironmentFile=/etc/deerflow/runtime.env
+EnvironmentFile=/etc/deerflow/model.env
+ExecStart=/opt/deerflow/backend/.venv/bin/python -m uvicorn app.gateway.app:app --host 127.0.0.1 --port 8001 --workers 1 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=60
+MemoryHigh=650M
+MemoryMax=1G
+MemorySwapMax=768M
+[Install]
+WantedBy=multi-user.target

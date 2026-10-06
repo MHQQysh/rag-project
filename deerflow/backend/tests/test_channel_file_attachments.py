@@ -1,0 +1,1201 @@
+"""Tests for channel file attachment support (ResolvedAttachment, resolution, send_file)."""
+
+from __future__ import annotations
+
+import asyncio
+import os
+from pathlib import Path
+from unittest.mock import MagicMock, patch
+
+from support.symlinks import symlink_or_skip
+
+from app.channels.base import Channel
+from app.channels.message_bus import InboundMessage, MessageBus, OutboundMessage, ResolvedAttachment
+
+
+def _run(coro):
+    """Run an async coroutine synchronously."""
+    loop = asyncio.new_event_loop()
+    try:
+        return loop.run_until_complete(coro)
+    finally:
+        loop.close()
+
+
+# ---------------------------------------------------------------------------
+# ResolvedAttachment tests
+# ---------------------------------------------------------------------------
+
+
+class TestResolvedAttachment:
+    def test_basic_construction(self, tmp_path):
+        f = tmp_path / "test.pdf"
+        f.write_bytes(b"PDF content")
+
+        att = ResolvedAttachment(
+            virtual_path="/mnt/user-data/outputs/test.pdf",
+            actual_path=f,
+            filename="test.pdf",
+            mime_type="application/pdf",
+            size=11,
+            is_image=False,
+        )
+        assert att.filename == "test.pdf"
+        assert att.is_image is False
+        assert att.size == 11
+
+    def test_image_detection(self, tmp_path):
+        f = tmp_path / "photo.png"
+        f.write_bytes(b"\x89PNG")
+
+        att = ResolvedAttachment(
+            virtual_path="/mnt/user-data/outputs/photo.png",
+            actual_path=f,
+            filename="photo.png",
+            mime_type="image/png",
+            size=4,
+            is_image=True,
+        )
+        assert att.is_image is True
+
+
+# ---------------------------------------------------------------------------
+# OutboundMessage.attachments field tests
+# ---------------------------------------------------------------------------
+
+
+class TestOutboundMessageAttachments:
+    def test_default_empty_attachments(self):
+        msg = OutboundMessage(
+            channel_name="test",
+            chat_id="c1",
+            thread_id="t1",
+            text="hello",
+        )
+        assert msg.attachments == []
+
+    def test_attachments_populated(self, tmp_path):
+        f = tmp_path / "file.txt"
+        f.write_text("content")
+
+        att = ResolvedAttachment(
+            virtual_path="/mnt/user-data/outputs/file.txt",
+            actual_path=f,
+            filename="file.txt",
+            mime_type="text/plain",
+            size=7,
+            is_image=False,
+        )
+        msg = OutboundMessage(
+            channel_name="test",
+            chat_id="c1",
+            thread_id="t1",
+            text="hello",
+            attachments=[att],
+        )
+        assert len(msg.attachments) == 1
+        assert msg.attachments[0].filename == "file.txt"
+
+
+# ---------------------------------------------------------------------------
+# _resolve_attachments tests
+# ---------------------------------------------------------------------------
+
+
+class TestResolveAttachments:
+    def test_resolves_existing_file(self, tmp_path):
+        """Successfully resolves a virtual path to an existing file."""
+        from app.channels.manager import _resolve_attachments
+
+        # Create the directory structure: threads/{thread_id}/user-data/outputs/
+        thread_id = "test-thread-123"
+        outputs_dir = tmp_path / "threads" / thread_id / "user-data" / "outputs"
+        outputs_dir.mkdir(parents=True)
+        test_file = outputs_dir / "report.pdf"
+        test_file.write_bytes(b"%PDF-1.4 fake content")
+
+        mock_paths = MagicMock()
+        mock_paths.resolve_virtual_path.return_value = test_file
+        mock_paths.sandbox_outputs_dir.return_value = outputs_dir
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments(thread_id, ["/mnt/user-data/outputs/report.pdf"])
+
+        assert len(result) == 1
+        assert result[0].filename == "report.pdf"
+        assert result[0].mime_type == "application/pdf"
+        assert result[0].is_image is False
+        assert result[0].size == len(b"%PDF-1.4 fake content")
+
+    def test_resolves_image_file(self, tmp_path):
+        """Images are detected by MIME type."""
+        from app.channels.manager import _resolve_attachments
+
+        thread_id = "test-thread"
+        outputs_dir = tmp_path / "threads" / thread_id / "user-data" / "outputs"
+        outputs_dir.mkdir(parents=True)
+        img = outputs_dir / "chart.png"
+        img.write_bytes(b"\x89PNG fake image")
+
+        mock_paths = MagicMock()
+        mock_paths.resolve_virtual_path.return_value = img
+        mock_paths.sandbox_outputs_dir.return_value = outputs_dir
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments(thread_id, ["/mnt/user-data/outputs/chart.png"])
+
+        assert len(result) == 1
+        assert result[0].is_image is True
+        assert result[0].mime_type == "image/png"
+
+    def test_skips_missing_file(self, tmp_path):
+        """Missing files are skipped with a warning."""
+        from app.channels.manager import _resolve_attachments
+
+        outputs_dir = tmp_path / "outputs"
+        outputs_dir.mkdir()
+
+        mock_paths = MagicMock()
+        mock_paths.resolve_virtual_path.return_value = outputs_dir / "nonexistent.txt"
+        mock_paths.sandbox_outputs_dir.return_value = outputs_dir
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments("t1", ["/mnt/user-data/outputs/nonexistent.txt"])
+
+        assert result == []
+
+    def test_skips_invalid_path(self):
+        """Invalid paths (ValueError from resolve) are skipped."""
+        from app.channels.manager import _resolve_attachments
+
+        mock_paths = MagicMock()
+        mock_paths.resolve_virtual_path.side_effect = ValueError("bad path")
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments("t1", ["/invalid/path"])
+
+        assert result == []
+
+    def test_rejects_uploads_path(self):
+        """Paths under /mnt/user-data/uploads/ are rejected (security)."""
+        from app.channels.manager import _resolve_attachments
+
+        mock_paths = MagicMock()
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments("t1", ["/mnt/user-data/uploads/secret.pdf"])
+
+        assert result == []
+        mock_paths.resolve_virtual_path.assert_not_called()
+
+    def test_rejects_workspace_path(self):
+        """Paths under /mnt/user-data/workspace/ are rejected (security)."""
+        from app.channels.manager import _resolve_attachments
+
+        mock_paths = MagicMock()
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments("t1", ["/mnt/user-data/workspace/config.py"])
+
+        assert result == []
+        mock_paths.resolve_virtual_path.assert_not_called()
+
+    def test_rejects_path_traversal_escape(self, tmp_path):
+        """Paths that escape the outputs directory after resolution are rejected."""
+        from app.channels.manager import _resolve_attachments
+
+        thread_id = "t1"
+        outputs_dir = tmp_path / "threads" / thread_id / "user-data" / "outputs"
+        outputs_dir.mkdir(parents=True)
+        # Simulate a resolved path that escapes outside the outputs directory
+        escaped_file = tmp_path / "threads" / thread_id / "user-data" / "uploads" / "stolen.txt"
+        escaped_file.parent.mkdir(parents=True, exist_ok=True)
+        escaped_file.write_text("sensitive")
+
+        mock_paths = MagicMock()
+        mock_paths.resolve_virtual_path.return_value = escaped_file
+        mock_paths.sandbox_outputs_dir.return_value = outputs_dir
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments(thread_id, ["/mnt/user-data/outputs/../uploads/stolen.txt"])
+
+        assert result == []
+
+    def test_rejects_symlink_planted_in_outputs(self, tmp_path):
+        """A symlink inside outputs/ pointing at a sibling upload is skipped.
+
+        Uses the real ``Paths`` layout so the shared outputs-confinement helper
+        (also used by the artifact editor) is exercised end to end.
+        """
+        from app.channels.manager import _resolve_attachments
+        from deerflow.config.paths import Paths
+
+        paths = Paths(tmp_path)
+        outputs_dir = paths.sandbox_outputs_dir("t1", user_id="owner-1")
+        uploads_dir = paths.sandbox_uploads_dir("t1", user_id="owner-1")
+        outputs_dir.mkdir(parents=True)
+        uploads_dir.mkdir(parents=True)
+        victim = uploads_dir / "secret.pdf"
+        victim.write_bytes(b"%PDF-1.4 secret")
+        symlink_or_skip(outputs_dir / "report.pdf", victim)
+
+        with patch("app.gateway.path_utils.get_paths", return_value=paths):
+            result = _resolve_attachments("t1", ["/mnt/user-data/outputs/report.pdf"], user_id="owner-1")
+
+        assert result == []
+
+    def test_multiple_artifacts_partial_resolution(self, tmp_path):
+        """Mixed valid/invalid artifacts: only valid ones are returned."""
+        from app.channels.manager import _resolve_attachments
+
+        thread_id = "t1"
+        outputs_dir = tmp_path / "outputs"
+        outputs_dir.mkdir()
+        good_file = outputs_dir / "data.csv"
+        good_file.write_text("a,b,c")
+
+        mock_paths = MagicMock()
+        mock_paths.sandbox_outputs_dir.return_value = outputs_dir
+
+        def resolve_side_effect(tid, vpath, *, user_id=None):
+            if "data.csv" in vpath:
+                return good_file
+            return tmp_path / "missing.txt"
+
+        mock_paths.resolve_virtual_path.side_effect = resolve_side_effect
+
+        with patch("app.gateway.path_utils.get_paths", return_value=mock_paths):
+            result = _resolve_attachments(
+                thread_id,
+                ["/mnt/user-data/outputs/data.csv", "/mnt/user-data/outputs/missing.txt"],
+            )
+
+        assert len(result) == 1
+        assert result[0].filename == "data.csv"
+
+
+# ---------------------------------------------------------------------------
+# Inbound file ingestion tests
+# ---------------------------------------------------------------------------
+
+
+class TestInboundFileIngestion:
+    def test_consumes_inline_channel_bytes_without_exposing_them_downstream(self, tmp_path):
+        from app.channels import manager
+
+        uploads_dir = tmp_path / "uploads"
+        uploads_dir.mkdir()
+        msg = InboundMessage(
+            channel_name="telegram",
+            chat_id="chat-1",
+            user_id="user-1",
+            text="see attachment",
+            files=[{"type": "file", "filename": "report.pdf", "_content": b"pdf bytes"}],
+        )
+
+        with patch("deerflow.uploads.manager.ensure_uploads_dir", return_value=uploads_dir):
+            result = _run(manager._ingest_inbound_files("thread-1", msg))
+
+        assert result == [
+            {
+                "filename": "report.pdf",
+                "size": len(b"pdf bytes"),
+                "path": "/mnt/user-data/uploads/report.pdf",
+                "is_image": False,
+            }
+        ]
+        assert (uploads_dir / "report.pdf").read_bytes() == b"pdf bytes"
+        assert "_content" not in msg.files[0]
+
+    def test_rejects_preexisting_symlink_destination(self, tmp_path):
+        from app.channels import manager
+
+        uploads_dir = tmp_path / "uploads"
+        uploads_dir.mkdir()
+        outside_file = tmp_path / "outside-created.txt"
+        symlink_or_skip(uploads_dir / "victim.txt", outside_file)
+
+        msg = InboundMessage(
+            channel_name="test-channel",
+            chat_id="chat-1",
+            user_id="user-1",
+            text="see attachment",
+            files=[{"filename": "victim.txt", "url": "https://example.invalid/victim.txt"}],
+        )
+
+        async def fake_reader(file_info, client):
+            return b"attacker data"
+
+        with (
+            patch("deerflow.uploads.manager.ensure_uploads_dir", return_value=uploads_dir),
+            patch.dict(manager.INBOUND_FILE_READERS, {"test-channel": fake_reader}, clear=False),
+        ):
+            result = _run(manager._ingest_inbound_files("thread-1", msg))
+
+        assert result == []
+        assert not outside_file.exists()
+        assert (uploads_dir / "victim.txt").is_symlink()
+
+    def test_rejects_dangling_symlink_destination(self, tmp_path):
+        from app.channels import manager
+
+        uploads_dir = tmp_path / "uploads"
+        uploads_dir.mkdir()
+        missing_target = tmp_path / "missing-created.txt"
+        symlink_or_skip(uploads_dir / "victim.txt", missing_target)
+
+        msg = InboundMessage(
+            channel_name="test-channel",
+            chat_id="chat-1",
+            user_id="user-1",
+            text="see attachment",
+            files=[{"filename": "victim.txt", "url": "https://example.invalid/victim.txt"}],
+        )
+
+        async def fake_reader(file_info, client):
+            return b"attacker data"
+
+        with (
+            patch("deerflow.uploads.manager.ensure_uploads_dir", return_value=uploads_dir),
+            patch.dict(manager.INBOUND_FILE_READERS, {"test-channel": fake_reader}, clear=False),
+        ):
+            result = _run(manager._ingest_inbound_files("thread-1", msg))
+
+        assert result == []
+        assert not missing_target.exists()
+        assert (uploads_dir / "victim.txt").is_symlink()
+
+    def test_hardlinked_existing_file_is_not_overwritten(self, tmp_path):
+        from app.channels import manager
+
+        uploads_dir = tmp_path / "uploads"
+        uploads_dir.mkdir()
+        outside_file = tmp_path / "outside-created.txt"
+        outside_file.write_text("protected", encoding="utf-8")
+        os.link(outside_file, uploads_dir / "victim.txt")
+
+        msg = InboundMessage(
+            channel_name="test-channel",
+            chat_id="chat-1",
+            user_id="user-1",
+            text="see attachment",
+            files=[{"filename": "victim.txt", "url": "https://example.invalid/victim.txt"}],
+        )
+
+        async def fake_reader(file_info, client):
+            return b"new attachment data"
+
+        with (
+            patch("deerflow.uploads.manager.ensure_uploads_dir", return_value=uploads_dir),
+            patch.dict(manager.INBOUND_FILE_READERS, {"test-channel": fake_reader}, clear=False),
+        ):
+            result = _run(manager._ingest_inbound_files("thread-1", msg))
+
+        assert result == [
+            {
+                "filename": "victim_1.txt",
+                "size": len(b"new attachment data"),
+                "path": "/mnt/user-data/uploads/victim_1.txt",
+                "is_image": False,
+            }
+        ]
+        assert outside_file.read_text(encoding="utf-8") == "protected"
+        assert (uploads_dir / "victim.txt").read_text(encoding="utf-8") == "protected"
+        assert (uploads_dir / "victim_1.txt").read_bytes() == b"new attachment data"
+
+
+# ---------------------------------------------------------------------------
+# Channel base class _on_outbound with attachments
+# ---------------------------------------------------------------------------
+
+
+class _DummyChannel(Channel):
+    """Concrete channel for testing the base class behavior."""
+
+    def __init__(self, bus):
+        super().__init__(name="dummy", bus=bus, config={})
+        self.sent_messages: list[OutboundMessage] = []
+        self.sent_files: list[tuple[OutboundMessage, ResolvedAttachment]] = []
+
+    async def start(self):
+        pass
+
+    async def stop(self):
+        pass
+
+    async def send(self, msg: OutboundMessage) -> None:
+        self.sent_messages.append(msg)
+
+    async def send_file(self, msg: OutboundMessage, attachment: ResolvedAttachment) -> bool:
+        self.sent_files.append((msg, attachment))
+        return True
+
+
+class TestBaseChannelOnOutbound:
+    def test_default_receive_file_returns_original_message(self):
+        """The base Channel.receive_file returns the original message unchanged."""
+
+        class MinimalChannel(Channel):
+            async def start(self):
+                pass
+
+            async def stop(self):
+                pass
+
+            async def send(self, msg):
+                pass
+
+        from app.channels.message_bus import InboundMessage
+
+        bus = MessageBus()
+        ch = MinimalChannel(name="minimal", bus=bus, config={})
+        msg = InboundMessage(channel_name="minimal", chat_id="c1", user_id="u1", text="hello", files=[{"file_key": "k1"}])
+
+        result = _run(ch.receive_file(msg, "thread-1"))
+
+        assert result is msg
+        assert result.text == "hello"
+        assert result.files == [{"file_key": "k1"}]
+
+    def test_send_file_called_for_each_attachment(self, tmp_path):
+        """_on_outbound sends text first, then uploads each attachment."""
+        bus = MessageBus()
+        ch = _DummyChannel(bus)
+
+        f1 = tmp_path / "a.txt"
+        f1.write_text("aaa")
+        f2 = tmp_path / "b.png"
+        f2.write_bytes(b"\x89PNG")
+
+        att1 = ResolvedAttachment("/mnt/user-data/outputs/a.txt", f1, "a.txt", "text/plain", 3, False)
+        att2 = ResolvedAttachment("/mnt/user-data/outputs/b.png", f2, "b.png", "image/png", 4, True)
+
+        msg = OutboundMessage(
+            channel_name="dummy",
+            chat_id="c1",
+            thread_id="t1",
+            text="Here are your files",
+            attachments=[att1, att2],
+        )
+
+        _run(ch._on_outbound(msg))
+
+        assert len(ch.sent_messages) == 1
+        assert len(ch.sent_files) == 2
+        assert ch.sent_files[0][1].filename == "a.txt"
+        assert ch.sent_files[1][1].filename == "b.png"
+
+    def test_no_attachments_no_send_file(self):
+        """When there are no attachments, send_file is not called."""
+        bus = MessageBus()
+        ch = _DummyChannel(bus)
+
+        msg = OutboundMessage(
+            channel_name="dummy",
+            chat_id="c1",
+            thread_id="t1",
+            text="No files here",
+        )
+
+        _run(ch._on_outbound(msg))
+
+        assert len(ch.sent_messages) == 1
+        assert len(ch.sent_files) == 0
+
+    def test_send_file_failure_does_not_block_others(self, tmp_path):
+        """If one attachment upload fails, remaining attachments still get sent."""
+        bus = MessageBus()
+        ch = _DummyChannel(bus)
+
+        # Override send_file to fail on first call, succeed on second
+        call_count = 0
+        original_send_file = ch.send_file
+
+        async def flaky_send_file(msg, att):
+            nonlocal call_count
+            call_count += 1
+            if call_count == 1:
+                raise RuntimeError("upload failed")
+            return await original_send_file(msg, att)
+
+        ch.send_file = flaky_send_file  # type: ignore
+
+        f1 = tmp_path / "fail.txt"
+        f1.write_text("x")
+        f2 = tmp_path / "ok.txt"
+        f2.write_text("y")
+
+        att1 = ResolvedAttachment("/mnt/user-data/outputs/fail.txt", f1, "fail.txt", "text/plain", 1, False)
+        att2 = ResolvedAttachment("/mnt/user-data/outputs/ok.txt", f2, "ok.txt", "text/plain", 1, False)
+
+        msg = OutboundMessage(
+            channel_name="dummy",
+            chat_id="c1",
+            thread_id="t1",
+            text="files",
+            attachments=[att1, att2],
+        )
+
+        _run(ch._on_outbound(msg))
+
+        # First upload failed, second succeeded
+        assert len(ch.sent_files) == 1
+        assert ch.sent_files[0][1].filename == "ok.txt"
+
+    def test_send_raises_skips_file_uploads(self, tmp_path):
+        """When send() raises, file uploads are skipped entirely."""
+        bus = MessageBus()
+        ch = _DummyChannel(bus)
+
+        async def failing_send(msg):
+            raise RuntimeError("network error")
+
+        ch.send = failing_send  # type: ignore
+
+        f = tmp_path / "a.pdf"
+        f.write_bytes(b"%PDF")
+        att = ResolvedAttachment("/mnt/user-data/outputs/a.pdf", f, "a.pdf", "application/pdf", 4, False)
+        msg = OutboundMessage(
+            channel_name="dummy",
+            chat_id="c1",
+            thread_id="t1",
+            text="Here is the file",
+            attachments=[att],
+        )
+
+        _run(ch._on_outbound(msg))
+
+        # send() raised, so send_file should never be called
+        assert len(ch.sent_files) == 0
+
+    def test_default_send_file_returns_false(self):
+        """The base Channel.send_file returns False by default."""
+
+        class MinimalChannel(Channel):
+            async def start(self):
+                pass
+
+            async def stop(self):
+                pass
+
+            async def send(self, msg):
+                pass
+
+        bus = MessageBus()
+        ch = MinimalChannel(name="minimal", bus=bus, config={})
+        att = ResolvedAttachment("/x", Path("/x"), "x", "text/plain", 0, False)
+        msg = OutboundMessage(channel_name="minimal", chat_id="c", thread_id="t", text="t")
+
+        result = _run(ch.send_file(msg, att))
+        assert result is False
+
+
+# ---------------------------------------------------------------------------
+# ChannelManager artifact resolution integration
+# ---------------------------------------------------------------------------
+
+
+class TestManagerArtifactResolution:
+    def test_handle_chat_populates_attachments(self):
+        """Verify _resolve_attachments is importable and works with the manager module."""
+        from app.channels.manager import _resolve_attachments
+
+        # Basic smoke test: empty artifacts returns empty list
+        mock_paths = MagicMock()
+        with patch("deerflow.config.paths.get_paths", return_value=mock_paths):
+            result = _resolve_attachments("t1", [])
+        assert result == []
+
+    def test_format_artifact_text_for_unresolved(self):
+        """_format_artifact_text produces expected output."""
+        from app.channels.manager import _format_artifact_text
+
+        assert "report.pdf" in _format_artifact_text(["/mnt/user-data/outputs/report.pdf"])
+        result = _format_artifact_text(["/mnt/user-data/outputs/a.txt", "/mnt/user-data/outputs/b.txt"])
+        assert "a.txt" in result
+        assert "b.txt" in result
+
+
+# ---------------------------------------------------------------------------
+# URL-based inbound file reader (WeCom media / WeChat full_url fallback)
+# ---------------------------------------------------------------------------
+
+
+class _FakeStreamResponse:
+    def __init__(self, chunks: list[bytes], headers: dict[str, str] | None = None):
+        self._chunks = chunks
+        self.headers = headers or {}
+
+    def raise_for_status(self) -> None:
+        return None
+
+    # Deliberately no aiter_bytes: the reader must consume undecoded bytes, so
+    # an accidental switch back to the decoding iterator fails loudly here.
+    async def aiter_raw(self):
+        for chunk in self._chunks:
+            yield chunk
+
+
+class _FakeStreamContext:
+    def __init__(self, response: _FakeStreamResponse):
+        self._response = response
+
+    async def __aenter__(self) -> _FakeStreamResponse:
+        return self._response
+
+    async def __aexit__(self, *exc_info) -> bool:
+        return False
+
+
+class _FakeStreamingClient:
+    def __init__(self, chunks: list[bytes]):
+        self._chunks = chunks
+
+    def stream(self, _method: str, _url: str, **_kwargs) -> _FakeStreamContext:
+        return _FakeStreamContext(_FakeStreamResponse(self._chunks))
+
+
+class TestHttpInboundFileReader:
+    def test_joins_streamed_chunks_under_the_cap(self):
+        from app.channels.manager import _read_http_inbound_file
+
+        client = _FakeStreamingClient([b"ab", b"cd"])
+
+        result = _run(_read_http_inbound_file({"url": "https://cdn.example/x", "filename": "x.bin"}, client))  # type: ignore[arg-type]
+
+        assert result == b"abcd"
+
+    def test_aborts_when_stream_exceeds_the_cap(self, monkeypatch):
+        from app.channels import manager
+
+        monkeypatch.setattr(manager, "MAX_INBOUND_URL_FILE_BYTES", 5)
+        client = _FakeStreamingClient([b"abc", b"def"])  # 6 bytes total vs a 5-byte cap
+
+        result = _run(manager._read_http_inbound_file({"url": "https://cdn.example/x?token=1", "filename": "x.bin"}, client))  # type: ignore[arg-type]
+
+        assert result is None
+
+    def test_missing_url_returns_none(self):
+        from app.channels.manager import _read_http_inbound_file
+
+        assert _run(_read_http_inbound_file({"filename": "x.bin"}, _FakeStreamingClient([]))) is None  # type: ignore[arg-type]
+
+    def test_compressed_response_is_rejected_before_decode(self, caplog):
+        """aiter_bytes() would transparently decode Content-Encoding, and the
+        decoder allocates the whole decompressed body before yielding a chunk
+        — a gzip bomb from an admitted host would bypass the byte cap (one
+        ~8 KB wire chunk decoding to 8 MiB, reproduced here). The reader must
+        request identity and refuse any residual encoding before reading."""
+        import gzip as _gzip
+        import logging as _logging
+
+        import httpx
+
+        from app.channels import manager
+
+        class _AsyncChunks(httpx.AsyncByteStream):
+            def __init__(self, chunks: list[bytes]):
+                self._chunks = chunks
+
+            async def __aiter__(self):
+                for chunk in self._chunks:
+                    yield chunk
+
+        seen_requests: list[httpx.Request] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            seen_requests.append(request)
+            return httpx.Response(
+                200,
+                headers={"Content-Encoding": "gzip"},
+                stream=_AsyncChunks([_gzip.compress(b"\x00" * (8 * 1024 * 1024))]),
+            )
+
+        async def go():
+            client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+            try:
+                return await manager._read_http_inbound_file({"url": "https://cdn.example/x", "filename": "x.bin"}, client)
+            finally:
+                await client.aclose()
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.manager"):
+            result = _run(go())
+
+        assert result is None
+        assert "Content-Encoding" in caplog.text
+        # Identity is requested up front so a compliant server never compresses.
+        assert seen_requests[0].headers.get("accept-encoding") == "identity"
+
+    def test_identity_response_round_trips(self):
+        """An unencoded response still streams and joins as before (real httpx transport)."""
+        import httpx
+
+        from app.channels.manager import _read_http_inbound_file
+
+        class _AsyncChunks(httpx.AsyncByteStream):
+            def __init__(self, chunks: list[bytes]):
+                self._chunks = chunks
+
+            async def __aiter__(self):
+                for chunk in self._chunks:
+                    yield chunk
+
+        def handler(_request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, stream=_AsyncChunks([b"ab"]))
+
+        async def go():
+            client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+            try:
+                return await _read_http_inbound_file({"url": "https://cdn.example/x", "filename": "x.bin"}, client)
+            finally:
+                await client.aclose()
+
+        assert _run(go()) == b"ab"
+
+
+class _RecordingStreamClient(_FakeStreamingClient):
+    def __init__(self, chunks: list[bytes]):
+        super().__init__(chunks)
+        self.streamed_urls: list[str] = []
+
+    def stream(self, method: str, url: str, **kwargs) -> _FakeStreamContext:
+        self.streamed_urls.append(url)
+        return super().stream(method, url, **kwargs)
+
+
+class TestWecomMediaUrlGate:
+    def test_disallowed_host_rejected_before_fetch(self):
+        from app.channels.manager import _read_wecom_inbound_file
+
+        client = _RecordingStreamClient([b"secret-internal-response"])
+
+        result = _run(
+            _read_wecom_inbound_file(
+                {"url": "http://169.254.169.254/latest/meta-data", "filename": "x.bin"},
+                client,  # type: ignore[arg-type]
+            )
+        )
+
+        assert result is None
+        assert client.streamed_urls == []
+
+    def test_qq_host_passes_through_to_fetch(self):
+        from app.channels.manager import _read_wecom_inbound_file
+
+        client = _RecordingStreamClient([b"ab"])
+
+        result = _run(
+            _read_wecom_inbound_file(
+                {"url": "https://cdn.work.weixin.qq.com/media/x?token=1", "filename": "x.bin", "aeskey": None},
+                client,  # type: ignore[arg-type]
+            )
+        )
+
+        assert result == b"ab"
+        assert client.streamed_urls == ["https://cdn.work.weixin.qq.com/media/x?token=1"]
+
+    def test_lookalike_suffix_never_matches(self):
+        from app.channels.manager import _is_allowed_wecom_media_url
+
+        assert not _is_allowed_wecom_media_url("https://notqq.com/x")
+        assert not _is_allowed_wecom_media_url("https://qq.com.evil.io/x")
+        assert not _is_allowed_wecom_media_url("file:///etc/passwd")
+        assert _is_allowed_wecom_media_url("https://cdn.weixin.qq.com/x")
+
+    def test_realistic_wecom_cos_host_passes_gate(self):
+        """WeCom serves media from signed COS links shaped ww-aibot-img-<id>.cos.<region>.myqcloud.com.
+
+        Published callback examples (go-sphere/wecom-bot-api API.md) use exactly
+        this shape for both image.url and file.url; a bare qq.com allowlist
+        would drop every normal WeCom attachment.
+        """
+        from app.channels.manager import _is_allowed_wecom_media_url, _read_wecom_inbound_file
+
+        realistic = "https://ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com/BHoPdA3/7571665296904772241?sign=q-sign-algorithm%3Dsha1&q-signature=QuerySecret"
+        assert _is_allowed_wecom_media_url(realistic)
+
+        client = _RecordingStreamClient([b"ab"])
+        result = _run(
+            _read_wecom_inbound_file(
+                {"url": realistic, "aeskey": None},
+                client,  # type: ignore[arg-type]
+            )
+        )
+        assert result == b"ab"
+        assert client.streamed_urls == [realistic]
+
+    def test_arbitrary_cos_bucket_never_matches(self):
+        """The COS numeric suffix is the owner's Tencent Cloud APPID and bucket
+        names are user-chosen, so only the APPID observed in Tencent's
+        published aibot callback examples (1258476243) matches — not a custom
+        bucket name, a different account's APPID, or a lookalike domain."""
+        from app.channels.manager import _is_allowed_wecom_media_url
+
+        assert not _is_allowed_wecom_media_url("https://my-own-bucket.cos.ap-guangzhou.myqcloud.com/x?sign=1")
+        assert not _is_allowed_wecom_media_url("https://attacker-prefix-1.cos.ap-guangzhou.myqcloud.com/x?sign=1")
+        assert not _is_allowed_wecom_media_url("https://ww-aibot-img-evil.cos.ap-guangzhou.myqcloud.com/x?sign=1")
+        assert not _is_allowed_wecom_media_url("https://ww-aibot-img-123.cos.ap-guangzhou.myqcloud.com.evil.io/x")
+        # Same bucket prefix, different Tencent Cloud account (reviewer repro):
+        # any account can register a "ww-aibot-img-*" bucket of its own.
+        assert not _is_allowed_wecom_media_url("https://ww-aibot-img-1250000000.cos.ap-guangzhou.myqcloud.com/x?sign=1")
+        assert not _is_allowed_wecom_media_url("https://ww-aibot-img-0.cos.ap-shanghai.myqcloud.com/x")
+        # The verified APPID is trusted across regions.
+        assert _is_allowed_wecom_media_url("https://ww-aibot-img-1258476243.cos.ap-shanghai.myqcloud.com/x")
+
+    def test_oversize_rejection_does_not_log_url_credentials(self, monkeypatch, caplog):
+        """Signed media URLs carry credentials in path and query; only the host may be logged."""
+        import logging as _logging
+
+        from app.channels import manager
+
+        monkeypatch.setattr(manager, "MAX_INBOUND_URL_FILE_BYTES", 4)
+        url = "https://ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com/private/BearerSecret?token=QuerySecret"
+        client = _FakeStreamingClient([b"abcdef"])
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.manager"):
+            result = _run(manager._read_http_inbound_file({"url": url}, client))  # type: ignore[arg-type]
+
+        assert result is None
+        logged = "\n".join(record.getMessage() for record in caplog.records)
+        assert "BearerSecret" not in logged
+        assert "QuerySecret" not in logged
+        assert "/private/" not in logged
+        assert "ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com" in logged  # host label is present
+
+    def test_inbound_file_label_never_contains_url(self):
+        from app.channels.manager import _inbound_file_label
+
+        # Whitespace in a webhook-supplied filename is collapsed and capped.
+        assert _inbound_file_label({"filename": "a\nb " + "x" * 100}) == "a b " + "x" * 76
+        # No filename: host-only label from whichever URL field is present.
+        assert _inbound_file_label({"url": "https://h.example/p?token=t"}) == "host=h.example"
+        assert _inbound_file_label({"full_url": "https://h2.example/p?token=t"}) == "host=h2.example"
+        # Nothing usable at all: positional label.
+        assert _inbound_file_label({}, idx=3) == "#3"
+        assert _inbound_file_label({}) == "<unnamed>"
+
+    def test_wecom_reader_success_does_not_leak_url_at_info(self, caplog):
+        """Successful signed-media downloads must not leak credentials at the Gateway's INFO level.
+
+        httpx emits ``HTTP Request: GET <full URL>`` at INFO before the reader
+        sees the response; the filter installed by ``configure_logging``
+        rewrites those records down to scheme + host. Real transport logging
+        path via MockTransport, success included — not just failure branches.
+        """
+        import logging as _logging
+
+        import httpx
+
+        from app.channels import manager
+        from deerflow.logging_config import UrlRedactionFilter, install_url_log_redaction
+
+        class _AsyncBody(httpx.AsyncByteStream):
+            async def __aiter__(self):
+                yield b"ok"
+
+        def handler(_request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, stream=_AsyncBody())
+
+        install_url_log_redaction()
+        url = "https://ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com/private/BearerSecret?token=QuerySecret"
+
+        async def go():
+            client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+            try:
+                return await manager._read_wecom_inbound_file({"url": url, "aeskey": None}, client)
+            finally:
+                await client.aclose()
+
+        with caplog.at_level(_logging.INFO):
+            result = _run(go())
+
+        assert result == b"ok"
+        formatted = "\n".join(record.getMessage() for record in caplog.records)
+        request_lines = [line for line in formatted.splitlines() if "HTTP Request" in line]
+        assert request_lines, "the request record itself must survive redaction (not suppression)"
+        assert any(isinstance(f, UrlRedactionFilter) for f in _logging.getLogger("httpx").filters)
+        assert "BearerSecret" not in formatted
+        assert "QuerySecret" not in formatted
+        assert "/private/" not in formatted
+        assert any("ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com/<redacted>" in line for line in request_lines)
+
+    def test_wechat_download_success_does_not_leak_url_at_info(self, caplog):
+        """WechatChannel._download_cdn_bytes hits the same httpx INFO path on success."""
+        import logging as _logging
+
+        import httpx
+
+        from app.channels.wechat import WechatChannel
+        from deerflow.logging_config import install_url_log_redaction
+
+        class _AsyncBody(httpx.AsyncByteStream):
+            async def __aiter__(self):
+                yield b"ok"
+
+        def handler(_request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, stream=_AsyncBody())
+
+        install_url_log_redaction()
+        channel = WechatChannel(MessageBus(), config={"bot_token": "test-token"})
+        channel._client = httpx.AsyncClient(transport=httpx.MockTransport(handler))  # type: ignore[assignment]
+
+        async def go():
+            try:
+                return await channel._download_cdn_bytes("https://cdn.weixin.qq.com/private/BearerSecret?token=QuerySecret")
+            finally:
+                await channel._client.aclose()
+
+        with caplog.at_level(_logging.INFO):
+            result = _run(go())
+
+        assert result == b"ok"
+        formatted = "\n".join(record.getMessage() for record in caplog.records)
+        assert "BearerSecret" not in formatted
+        assert "QuerySecret" not in formatted
+        assert "cdn.weixin.qq.com/<redacted>" in formatted
+
+    def test_outer_warning_branches_do_not_log_url_credentials(self, tmp_path, caplog):
+        """The _ingest_inbound_files reader-exception and no-data branches use host-only labels.
+
+        A reader that raises and one that returns None for a url-bearing file
+        dict without a filename are the real shapes that reach these branches
+        (WeCom gate drop, cap abort, download failure).
+        """
+        import logging as _logging
+
+        from app.channels import manager
+
+        uploads_dir = tmp_path / "uploads"
+        uploads_dir.mkdir()
+        secret_url = "https://ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com/private/BearerSecret?token=QuerySecret"
+
+        async def raising_reader(_file_info, _client):
+            raise RuntimeError("reader boom")
+
+        async def none_reader(_file_info, _client):
+            return None
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.manager"):
+            for reader in (raising_reader, none_reader):
+                msg = InboundMessage(
+                    channel_name="test-channel",
+                    chat_id="chat-1",
+                    user_id="user-1",
+                    text="see attachment",
+                    files=[{"url": secret_url}],
+                )
+                with (
+                    patch("deerflow.uploads.manager.ensure_uploads_dir", return_value=uploads_dir),
+                    patch.dict(manager.INBOUND_FILE_READERS, {"test-channel": reader}, clear=False),
+                ):
+                    assert _run(manager._ingest_inbound_files("thread-1", msg)) == []
+
+        logged = "\n".join(record.getMessage() for record in caplog.records)
+        assert "BearerSecret" not in logged
+        assert "QuerySecret" not in logged
+        assert "/private/" not in logged
+        assert "host=ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com" in logged
+
+    def test_http_failure_does_not_log_url_credentials(self, tmp_path, monkeypatch, caplog):
+        """A real HTTP failure must not leak the signed URL through the
+        exception traceback.
+
+        httpx.HTTPStatusError formats the full request URL (path + query, i.e.
+        the download credentials) into its message; logger.exception would
+        render it verbatim. Reproduces the reviewer's mock-transport 403
+        through the real _ingest_inbound_files() and asserts against the
+        fully formatted logs (caplog.text includes rendered tracebacks).
+        """
+        import logging as _logging
+
+        import httpx
+
+        from app.channels import manager
+
+        uploads_dir = tmp_path / "uploads"
+        uploads_dir.mkdir()
+        secret_url = "https://ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com/private/BearerSecret?token=QuerySecret"
+
+        def handler(_request: httpx.Request) -> httpx.Response:
+            return httpx.Response(403)
+
+        real_async_client = httpx.AsyncClient
+
+        def patched_async_client(**kwargs):
+            kwargs["transport"] = httpx.MockTransport(handler)
+            return real_async_client(**kwargs)
+
+        monkeypatch.setattr(manager.httpx, "AsyncClient", patched_async_client)
+
+        msg = InboundMessage(
+            channel_name="wecom",
+            chat_id="chat-1",
+            user_id="user-1",
+            text="see attachment",
+            files=[{"url": secret_url}],
+        )
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.manager"):
+            with patch("deerflow.uploads.manager.ensure_uploads_dir", return_value=uploads_dir):
+                assert _run(manager._ingest_inbound_files("thread-1", msg)) == []
+
+        assert "BearerSecret" not in caplog.text
+        assert "QuerySecret" not in caplog.text
+        assert "/private/" not in caplog.text
+        # The operator still sees what failed and for which host.
+        assert "HTTPStatusError (403)" in caplog.text
+        assert "ww-aibot-img-1258476243.cos.ap-guangzhou.myqcloud.com" in caplog.text
+
+    def test_operator_media_host_suffixes_extend_the_wecom_gate(self):
+        from app.channels.manager import _is_allowed_wecom_media_url
+
+        proxied = "https://media.mirror.example/wecom/x?sign=1"
+        assert not _is_allowed_wecom_media_url(proxied)
+        assert _is_allowed_wecom_media_url(proxied, extra_suffixes=frozenset({"mirror.example"}))
+        # Extras widen only by dot-boundary suffix, same as the built-ins.
+        assert not _is_allowed_wecom_media_url("https://mirror.example.evil.io/x", extra_suffixes=frozenset({"mirror.example"}))
+
+    def test_wecom_reader_resolves_operator_suffixes_from_live_channel(self, monkeypatch):
+        """The registry reader merges channels.wecom.allowed_media_hosts from the running channel."""
+        from types import SimpleNamespace as _NS
+
+        from app.channels import manager
+        from app.channels import service as service_module
+
+        proxied = "https://media.mirror.example/wecom/x?sign=1"
+        client = _RecordingStreamClient([b"ab"])
+
+        fake_service = _NS(get_channel=lambda name: _NS(allowed_media_host_suffixes=frozenset({"mirror.example"})) if name == "wecom" else None)
+        monkeypatch.setattr(service_module, "get_channel_service", lambda: fake_service)
+
+        result = _run(manager._read_wecom_inbound_file({"url": proxied, "aeskey": None}, client))  # type: ignore[arg-type]
+        assert result == b"ab"
+        assert client.streamed_urls == [proxied]
+
+        # Without the operator suffix (no live channel -> strict defaults only) the same URL is dropped pre-fetch.
+        monkeypatch.setattr(service_module, "get_channel_service", lambda: None)
+        strict_client = _RecordingStreamClient([b"ab"])
+        assert _run(manager._read_wecom_inbound_file({"url": proxied, "aeskey": None}, strict_client)) is None  # type: ignore[arg-type]
+        assert strict_client.streamed_urls == []
+
+    def test_wecom_channel_parses_operator_media_hosts(self):
+        from app.channels.wecom import WeComChannel
+
+        channel = WeComChannel(
+            MessageBus(),
+            config={"bot_id": "b", "bot_secret": "s", "allowed_media_hosts": [" .Mirror.Example ", "cdn2.example", "*.wild.example", ""]},
+        )
+        assert channel.allowed_media_host_suffixes == frozenset({"mirror.example", "cdn2.example", "wild.example"})
+
+        assert WeComChannel(MessageBus(), config={"bot_id": "b", "bot_secret": "s"}).allowed_media_host_suffixes == frozenset()
+
+    def test_wechat_fallback_without_staged_path_never_fetches(self):
+        """A WeChat file dict with only full_url has no re-fetch path: the URL gate is channel-side."""
+        from app.channels.manager import _read_wechat_inbound_file
+
+        client = _RecordingStreamClient([b"secret"])
+
+        result = _run(
+            _read_wechat_inbound_file(
+                {"url": None, "full_url": "https://cdn.weixin.qq.com/image.bin"},
+                client,  # type: ignore[arg-type]
+            )
+        )
+
+        assert result is None
+        assert client.streamed_urls == []
+
+
+class TestWeChatDownloadGuardLabels:
+    """Round-14 nit: ``_download_cdn_bytes`` returns None for two reasons
+    (in-flight cap abort, Content-Encoding refusal), and both used to be
+    labeled "exceeds size limit (N bytes)" by the callers — a contradictory
+    pair on the encoding path, where the transfer may be tiny. The callers
+    now log a neutral guard line; the accurate reason stays inside the
+    download function (same shape as the manager reader callers)."""
+
+    def _channel_with(self, handler):
+        import base64
+
+        import httpx
+
+        from app.channels.wechat import WechatChannel
+
+        channel = WechatChannel(MessageBus(), config={"bot_token": "test-token"})
+        channel._client = httpx.AsyncClient(transport=httpx.MockTransport(handler))  # type: ignore[assignment]
+        self._aes_key = base64.b64encode(b"\x01" * 16).decode()
+        return channel
+
+    @staticmethod
+    def _image_item(aes_key: str) -> dict:
+        return {"image_item": {"media": {"full_url": "https://cdn.weixin.qq.com/private/photo.bin", "aes_key": aes_key}}}
+
+    def test_encoding_refusal_logs_neutral_guard_line(self, caplog):
+        import gzip as _gzip
+        import logging as _logging
+
+        import httpx
+
+        class _AsyncChunks(httpx.AsyncByteStream):
+            async def __aiter__(self):
+                yield _gzip.compress(b"\x00" * 1024)
+
+        def handler(_request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, headers={"Content-Encoding": "gzip"}, stream=_AsyncChunks())
+
+        channel = self._channel_with(handler)
+        channel._max_inbound_image_bytes = 1024 * 1024
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.wechat"):
+            result = _run(channel._extract_image_file(self._image_item(self._aes_key), message_id="m1", index=0))
+
+        assert result is None
+        formatted = "\n".join(record.getMessage() for record in caplog.records)
+        # Accurate reason from the download function...
+        assert "Content-Encoding" in formatted
+        # ...and a neutral caller line that no longer asserts a size limit
+        # the transfer never hit.
+        assert "skipped by download guard" in formatted
+        assert "exceeds size limit" not in formatted
+
+    def test_cap_abort_logs_neutral_guard_line(self, caplog):
+        import logging as _logging
+
+        import httpx
+
+        class _AsyncChunks(httpx.AsyncByteStream):
+            async def __aiter__(self):
+                yield b"\x00" * 8
+                yield b"\x00" * 8
+                yield b"\x00" * 8
+
+        def handler(_request: httpx.Request) -> httpx.Response:
+            return httpx.Response(200, stream=_AsyncChunks())
+
+        channel = self._channel_with(handler)
+        channel._max_inbound_image_bytes = 8  # stream cap = padded(8) = 16 < 24
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.wechat"):
+            result = _run(channel._extract_image_file(self._image_item(self._aes_key), message_id="m2", index=0))
+
+        assert result is None
+        formatted = "\n".join(record.getMessage() for record in caplog.records)
+        # The function's accurate in-flight abort line carries the reason...
+        assert "aborting before full read" in formatted
+        # ...and the caller stays neutral instead of asserting the plaintext
+        # limit for a ciphertext cap decision.
+        assert "skipped by download guard" in formatted
+        assert "exceeds size limit" not in formatted
+
+    def test_staging_without_state_dir_is_logged_not_silent(self, caplog):
+        import logging as _logging
+
+        from app.channels.wechat import WechatChannel
+
+        channel = WechatChannel(MessageBus(), config={"bot_token": "test-token"})
+        assert channel._download_dir() is None
+
+        with caplog.at_level(_logging.WARNING, logger="app.channels.wechat"):
+            assert channel._stage_downloaded_file("photo.bin", b"x") is None
+
+        assert "no state directory configured" in caplog.text

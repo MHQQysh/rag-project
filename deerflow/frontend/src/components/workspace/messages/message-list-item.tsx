@@ -1,0 +1,768 @@
+import type { Message } from "@langchain/langgraph-sdk";
+import {
+  CheckIcon,
+  FileIcon,
+  Loader2Icon,
+  PencilIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+  XIcon,
+} from "lucide-react";
+import {
+  memo,
+  useCallback,
+  useMemo,
+  useState,
+  type ImgHTMLAttributes,
+} from "react";
+
+import { Loader } from "@/components/ai-elements/loader";
+import {
+  Message as AIElementMessage,
+  MessageContent as AIElementMessageContent,
+  MessageToolbar,
+} from "@/components/ai-elements/message";
+import {
+  Reasoning,
+  ReasoningTrigger,
+} from "@/components/ai-elements/reasoning";
+import { Shimmer } from "@/components/ai-elements/shimmer";
+import { Task, TaskTrigger } from "@/components/ai-elements/task";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  deleteFeedback,
+  upsertFeedback,
+  type FeedbackData,
+} from "@/core/api/feedback";
+import {
+  resolveArtifactURL,
+  resolveMessageImageURL,
+} from "@/core/artifacts/utils";
+import { extractCitationSources } from "@/core/citations/sources";
+import { useI18n } from "@/core/i18n/hooks";
+import {
+  extractContentFromMessage,
+  extractReasoningContentFromMessage,
+  getMessageCopyData,
+  parseUploadedFiles,
+  stripUploadedFilesTag,
+  type FileInMessage,
+} from "@/core/messages/utils";
+import { readReferenceMessageContexts } from "@/core/sidecar";
+import {
+  parseSlashSkillReference,
+  resolveSlashSkillDisplay,
+} from "@/core/skills";
+import { useSkills } from "@/core/skills/hooks";
+import { SafeReasoningContent } from "@/core/streamdown/components";
+import { cn } from "@/lib/utils";
+
+import { WorkspaceChangeBadge } from "../changes";
+import { CitationSourcesPanel } from "../citations/citation-sources-panel";
+import { CopyButton } from "../copy-button";
+import { ReferenceAttachmentSummary } from "../sidecar/reference-attachments";
+import { SlashSkillChip } from "../slash-skill-chip";
+import { Tooltip } from "../tooltip";
+
+import { MarkdownContent } from "./markdown-content";
+import { createMarkdownLinkComponent } from "./markdown-link";
+
+function FeedbackButtons({
+  threadId,
+  runId,
+  initialFeedback,
+}: {
+  threadId: string;
+  runId: string;
+  initialFeedback: FeedbackData | null;
+}) {
+  const [feedback, setFeedback] = useState<FeedbackData | null>(
+    initialFeedback,
+  );
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleClick = useCallback(
+    async (rating: number) => {
+      if (isSubmitting) return;
+      setIsSubmitting(true);
+      try {
+        if (feedback?.rating === rating) {
+          await deleteFeedback(threadId, runId);
+          setFeedback(null);
+        } else {
+          const result = await upsertFeedback(threadId, runId, rating);
+          setFeedback(result);
+        }
+      } catch {
+        // Revert on error — feedback state unchanged on catch
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [threadId, runId, feedback, isSubmitting],
+  );
+
+  return (
+    <div className="flex gap-1">
+      <button
+        type="button"
+        className={cn(
+          "text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors",
+          feedback?.rating === 1 && "text-foreground",
+        )}
+        onClick={() => handleClick(1)}
+        disabled={isSubmitting}
+      >
+        <ThumbsUpIcon
+          className={cn("size-4", feedback?.rating === 1 && "fill-current")}
+        />
+      </button>
+      <button
+        type="button"
+        className={cn(
+          "text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors",
+          feedback?.rating === -1 && "text-foreground",
+        )}
+        onClick={() => handleClick(-1)}
+        disabled={isSubmitting}
+      >
+        <ThumbsDownIcon
+          className={cn("size-4", feedback?.rating === -1 && "fill-current")}
+        />
+      </button>
+    </div>
+  );
+}
+
+export function MessageListItem({
+  className,
+  message,
+  isLoading,
+  feedback,
+  runId,
+  threadId,
+  artifactPaths = [],
+  showCopyButton = true,
+  showWorkspaceChanges = false,
+  canEdit = false,
+  isEditPending = false,
+  onEditAndRegenerate,
+}: {
+  className?: string;
+  message: Message;
+  isLoading?: boolean;
+  threadId: string;
+  artifactPaths?: readonly string[];
+  feedback?: FeedbackData | null;
+  runId?: string;
+  showCopyButton?: boolean;
+  showWorkspaceChanges?: boolean;
+  canEdit?: boolean;
+  isEditPending?: boolean;
+  onEditAndRegenerate?: (replacementText: string) => void | Promise<boolean>;
+}) {
+  const { t } = useI18n();
+  const isHuman = message.type === "human";
+  // One derivation serves both editing and the toolbar, and only runs when
+  // either consumer can use it: assistant rows never render this toolbar
+  // (the sole call site passes showCopyButton only for non-assistant rows)
+  // and the toolbar stays unrendered while loading — matching the guard the
+  // pre-memo call sat behind instead of deriving for every settled row.
+  const copyData = useMemo(
+    () =>
+      isHuman || (!isLoading && showCopyButton)
+        ? (getMessageCopyData(message) ?? "")
+        : "",
+    [isHuman, isLoading, showCopyButton, message],
+  );
+  const editableText = isHuman ? copyData : "";
+  const [isEditing, setIsEditing] = useState(false);
+  const [draft, setDraft] = useState("");
+  const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
+  const trimmedDraft = draft.trim();
+  const editSubmitDisabled =
+    isEditPending ||
+    isSubmittingEdit ||
+    trimmedDraft.length === 0 ||
+    trimmedDraft === editableText.trim();
+
+  const startEditing = useCallback(() => {
+    setDraft(editableText);
+    setIsEditing(true);
+  }, [editableText]);
+  const cancelEditing = useCallback(() => {
+    setIsEditing(false);
+    setDraft("");
+  }, []);
+  const submitEdit = useCallback(async () => {
+    if (editSubmitDisabled || !onEditAndRegenerate) {
+      return;
+    }
+    setIsSubmittingEdit(true);
+    try {
+      const result = await onEditAndRegenerate(trimmedDraft);
+      if (result !== false) {
+        setIsEditing(false);
+        setDraft("");
+      }
+    } finally {
+      setIsSubmittingEdit(false);
+    }
+  }, [editSubmitDisabled, onEditAndRegenerate, trimmedDraft]);
+
+  return (
+    <AIElementMessage
+      className={cn("group/conversation-message relative w-full", className)}
+      from={isHuman ? "user" : "assistant"}
+    >
+      <MessageContent
+        className={isHuman ? "w-fit" : "w-full"}
+        message={message}
+        isLoading={isLoading}
+        threadId={threadId}
+        artifactPaths={artifactPaths}
+        runId={runId}
+        showWorkspaceChanges={showWorkspaceChanges}
+        editState={
+          isHuman && isEditing
+            ? {
+                draft,
+                disabled: isEditPending || isSubmittingEdit,
+                submitDisabled: editSubmitDisabled,
+                onCancel: cancelEditing,
+                onDraftChange: setDraft,
+                onSubmit: submitEdit,
+              }
+            : undefined
+        }
+      />
+      {!isLoading && showCopyButton && (
+        <MessageToolbar
+          className={cn(
+            isHuman
+              ? "absolute right-0 -bottom-9 left-0 justify-end"
+              : "absolute right-0 bottom-0 left-0",
+            "z-20 opacity-0 transition-opacity delay-200 duration-300 group-hover/conversation-message:opacity-100",
+          )}
+        >
+          <div className="pointer-events-auto flex gap-1">
+            <CopyButton clipboardData={copyData} />
+            {canEdit && isHuman && onEditAndRegenerate && !isEditing && (
+              <Tooltip content={t.common.editAndRerun}>
+                <Button
+                  aria-label={t.common.editAndRerun}
+                  size="icon-sm"
+                  type="button"
+                  variant="ghost"
+                  disabled={isEditPending || isSubmittingEdit}
+                  onClick={startEditing}
+                >
+                  <PencilIcon className="size-3" />
+                </Button>
+              </Tooltip>
+            )}
+            {feedback !== undefined && runId && threadId && (
+              <FeedbackButtons
+                threadId={threadId}
+                runId={runId}
+                initialFeedback={feedback}
+              />
+            )}
+          </div>
+        </MessageToolbar>
+      )}
+    </AIElementMessage>
+  );
+}
+
+/**
+ * Custom image component that handles artifact URLs
+ */
+function MessageImage({
+  src,
+  alt,
+  threadId,
+  artifactPaths,
+  maxWidth = "90%",
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement> & {
+  threadId: string;
+  artifactPaths: readonly string[];
+  maxWidth?: string;
+}) {
+  if (!src) return null;
+
+  // `maxWidth` is applied inline rather than through a `max-w-[${maxWidth}]`
+  // class: Tailwind's JIT only generates utilities it can find as literal
+  // source tokens, so an interpolated arbitrary value would never be emitted.
+  const imgClassName = cn("overflow-hidden rounded-lg", props.className);
+  const imgStyle: React.CSSProperties = { maxWidth, ...props.style };
+
+  if (typeof src !== "string") {
+    return (
+      <img
+        {...props}
+        className={imgClassName}
+        style={imgStyle}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
+  const url = resolveMessageImageURL(src, threadId, artifactPaths);
+
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer">
+      <img
+        {...props}
+        className={imgClassName}
+        style={imgStyle}
+        src={url}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+  );
+}
+
+function HumanMessageText({ content }: { content: string }) {
+  // `parseSlashSkillReference` is a pure regex gate (no data subscription), so
+  // the overwhelmingly common plain-text human message never subscribes to the
+  // skills query. Only a message that literally looks like a `/skill …`
+  // activation mounts `HumanSlashSkillText`, which owns the `useSkills()`
+  // lookup. This keeps a skill-enabled toggle from re-rendering every human
+  // turn — only the few slash-candidate turns react to catalog changes.
+  const reference = useMemo(() => parseSlashSkillReference(content), [content]);
+
+  if (!reference) {
+    return <div className="break-words whitespace-pre-wrap">{content}</div>;
+  }
+
+  return <HumanSlashSkillText content={content} />;
+}
+
+function HumanSlashSkillText({ content }: { content: string }) {
+  const { skills } = useSkills();
+  const slashSkill = resolveSlashSkillDisplay(content, skills);
+
+  if (!slashSkill) {
+    return <div className="break-words whitespace-pre-wrap">{content}</div>;
+  }
+
+  return (
+    <div className="flex max-w-full min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+      <SlashSkillChip name={slashSkill.name} />
+      {slashSkill.remainingText && (
+        <span className="min-w-0 flex-1 break-words whitespace-pre-wrap">
+          {slashSkill.remainingText}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function MessageContent_({
+  className,
+  message,
+  isLoading = false,
+  threadId,
+  artifactPaths,
+  runId,
+  showWorkspaceChanges = false,
+  editState,
+}: {
+  className?: string;
+  message: Message;
+  isLoading?: boolean;
+  threadId: string;
+  artifactPaths: readonly string[];
+  runId?: string;
+  showWorkspaceChanges?: boolean;
+  editState?: {
+    draft: string;
+    disabled: boolean;
+    submitDisabled: boolean;
+    onCancel: () => void;
+    onDraftChange: (value: string) => void;
+    onSubmit: () => void | Promise<void>;
+  };
+}) {
+  const { t } = useI18n();
+  const isHuman = message.type === "human";
+  const getReasoningMessage = useCallback(
+    (isStreaming: boolean) =>
+      isStreaming ? (
+        <Shimmer duration={1}>{t.runDuration.reasoning}</Shimmer>
+      ) : (
+        t.runDuration.reasoning
+      ),
+    [t.runDuration.reasoning],
+  );
+  const components = useMemo(
+    () => ({
+      img: (props: ImgHTMLAttributes<HTMLImageElement>) => (
+        <MessageImage
+          {...props}
+          threadId={threadId}
+          artifactPaths={artifactPaths}
+          maxWidth="90%"
+        />
+      ),
+      a: createMarkdownLinkComponent(threadId),
+    }),
+    [artifactPaths, threadId],
+  );
+
+  const rawContent = extractContentFromMessage(message);
+  const reasoningContent = extractReasoningContentFromMessage(message);
+
+  const files = useMemo(() => {
+    const files = message.additional_kwargs?.files;
+    if (!Array.isArray(files) || files.length === 0) {
+      if (
+        rawContent.includes("<current_uploads>") ||
+        rawContent.includes("<uploaded_files>")
+      ) {
+        // If the content contains an upload context tag, we return the parsed files from the content for backward compatibility.
+        // <uploaded_files> is display-only compat for pre-#4174 history (#4212).
+        // Accepted tradeoff (review): a live user typing the legacy spelling can
+        // fabricate chips / hide their own message text — display-only and
+        // self-inflicted, no backend semantics. Age-gating the legacy spelling
+        // is a possible follow-up if this ever matters.
+        return parseUploadedFiles(rawContent);
+      }
+      return null;
+    }
+    return files as FileInMessage[];
+  }, [message.additional_kwargs?.files, rawContent]);
+  const referenceAttachments = useMemo(
+    () =>
+      readReferenceMessageContexts(message.additional_kwargs).map(
+        (context, index) => ({
+          id: index,
+          context,
+        }),
+      ),
+    [message.additional_kwargs],
+  );
+
+  const contentToDisplay = useMemo(() => {
+    if (isHuman) {
+      return rawContent ? stripUploadedFilesTag(rawContent) : "";
+    }
+    return rawContent ?? "";
+  }, [rawContent, isHuman]);
+  const citationSources = useMemo(
+    () => (isHuman ? [] : extractCitationSources(contentToDisplay)),
+    [contentToDisplay, isHuman],
+  );
+
+  const filesList =
+    files && files.length > 0 ? (
+      <RichFilesList files={files} threadId={threadId} />
+    ) : null;
+
+  // Uploading state: mock AI message shown while files upload
+  if (message.additional_kwargs?.element === "task") {
+    return (
+      <AIElementMessageContent className={className}>
+        <Task defaultOpen={false}>
+          <TaskTrigger title="">
+            <div className="text-muted-foreground flex w-full cursor-default items-center gap-2 text-sm select-none">
+              <Loader className="size-4" />
+              <span>{contentToDisplay}</span>
+            </div>
+          </TaskTrigger>
+        </Task>
+      </AIElementMessageContent>
+    );
+  }
+
+  // Reasoning-only AI message (no main response content yet)
+  if (!isHuman && reasoningContent && !rawContent) {
+    return (
+      <AIElementMessageContent className={className}>
+        <Reasoning isStreaming={isLoading}>
+          <ReasoningTrigger getThinkingMessage={getReasoningMessage} />
+          <SafeReasoningContent>{reasoningContent}</SafeReasoningContent>
+        </Reasoning>
+      </AIElementMessageContent>
+    );
+  }
+
+  if (isHuman) {
+    // Composer input is plain text, not authored Markdown. Parsing it as
+    // Markdown mangles pasted code/logs (indented lines become code blocks,
+    // "$...$" spans become math) and lets pathological input crash the page
+    // through marked's recursive blockquote lexer, so render it verbatim.
+    return (
+      <div
+        className={cn(
+          "ml-auto flex max-w-full min-w-0 flex-col gap-2",
+          className,
+        )}
+      >
+        {referenceAttachments.length > 0 && (
+          <ReferenceAttachmentSummary
+            className="self-end shadow-none"
+            references={referenceAttachments}
+            testId="message-reference-attachment"
+          />
+        )}
+        {filesList}
+        {editState ? (
+          <div className="bg-background border-border flex w-full min-w-0 flex-col gap-2 rounded-lg border p-2 shadow-sm">
+            <Textarea
+              autoFocus
+              className="min-h-24 resize-y"
+              disabled={editState.disabled}
+              value={editState.draft}
+              onChange={(event) =>
+                editState.onDraftChange(event.currentTarget.value)
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  editState.onCancel();
+                }
+                if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+                  event.preventDefault();
+                  void editState.onSubmit();
+                }
+              }}
+            />
+            <div className="text-muted-foreground text-xs">
+              {t.common.editRerunWarning}
+            </div>
+            <div className="flex justify-end gap-1">
+              <Button
+                size="sm"
+                type="button"
+                variant="ghost"
+                disabled={editState.disabled}
+                onClick={editState.onCancel}
+              >
+                <XIcon className="size-3" />
+                {t.common.cancel}
+              </Button>
+              <Button
+                size="sm"
+                type="button"
+                disabled={editState.submitDisabled}
+                onClick={() => void editState.onSubmit()}
+              >
+                <CheckIcon className="size-3" />
+                {t.common.updateAndRerun}
+              </Button>
+            </div>
+          </div>
+        ) : contentToDisplay ? (
+          <AIElementMessageContent className="w-full max-w-full">
+            <HumanMessageText content={contentToDisplay} />
+          </AIElementMessageContent>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <AIElementMessageContent className={className}>
+      {filesList}
+      {reasoningContent && (
+        <Reasoning isStreaming={isLoading}>
+          <ReasoningTrigger getThinkingMessage={getReasoningMessage} />
+          <SafeReasoningContent>{reasoningContent}</SafeReasoningContent>
+        </Reasoning>
+      )}
+      <MarkdownContent
+        content={contentToDisplay}
+        isLoading={isLoading}
+        className="my-3"
+        components={components}
+      />
+      <CitationSourcesPanel sources={citationSources} />
+      {message.type === "ai" && showWorkspaceChanges && (
+        <WorkspaceChangeBadge
+          threadId={threadId}
+          runId={runId}
+          disabled={isLoading}
+        />
+      )}
+    </AIElementMessageContent>
+  );
+}
+
+/**
+ * Get file extension and check helpers
+ */
+const getFileExt = (filename: string) =>
+  filename.split(".").pop()?.toLowerCase() ?? "";
+
+const FILE_TYPE_MAP: Record<string, string> = {
+  json: "JSON",
+  csv: "CSV",
+  txt: "TXT",
+  md: "Markdown",
+  py: "Python",
+  js: "JavaScript",
+  ts: "TypeScript",
+  tsx: "TSX",
+  jsx: "JSX",
+  html: "HTML",
+  css: "CSS",
+  xml: "XML",
+  yaml: "YAML",
+  yml: "YAML",
+  pdf: "PDF",
+  png: "PNG",
+  jpg: "JPG",
+  jpeg: "JPEG",
+  gif: "GIF",
+  svg: "SVG",
+  zip: "ZIP",
+  tar: "TAR",
+  gz: "GZ",
+};
+
+const IMAGE_EXTENSIONS = ["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp"];
+
+function getFileTypeLabel(filename: string): string {
+  const ext = getFileExt(filename);
+  return FILE_TYPE_MAP[ext] ?? (ext.toUpperCase() || "FILE");
+}
+
+function isImageFile(filename: string): boolean {
+  return IMAGE_EXTENSIONS.includes(getFileExt(filename));
+}
+
+/**
+ * Format bytes to human-readable size string
+ */
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return "—";
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${kb.toFixed(1)} KB`;
+  return `${(kb / 1024).toFixed(1)} MB`;
+}
+
+/**
+ * List of files from additional_kwargs.files (with optional upload status)
+ */
+function RichFilesList({
+  files,
+  threadId,
+}: {
+  files: FileInMessage[];
+  threadId: string;
+}) {
+  if (files.length === 0) return null;
+  return (
+    <div className="mb-2 flex flex-wrap justify-end gap-2">
+      {files.map((file, index) => (
+        <RichFileCard
+          key={`${file.filename}-${index}`}
+          file={file}
+          threadId={threadId}
+        />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Single file card that handles FileInMessage (supports uploading state)
+ */
+function RichFileCard({
+  file,
+  threadId,
+}: {
+  file: FileInMessage;
+  threadId: string;
+}) {
+  const { t } = useI18n();
+  const isUploading = file.status === "uploading";
+  const isImage = isImageFile(file.filename);
+
+  if (isUploading) {
+    return (
+      <div className="bg-background border-border/40 flex max-w-50 min-w-30 flex-col gap-1 rounded-lg border p-3 opacity-60 shadow-sm">
+        <div className="flex items-start gap-2">
+          <Loader2Icon className="text-muted-foreground mt-0.5 size-4 shrink-0 animate-spin" />
+          <span
+            className="text-foreground truncate text-sm font-medium"
+            title={file.filename}
+          >
+            {file.filename}
+          </span>
+        </div>
+        <div className="flex items-center justify-between gap-2">
+          <Badge
+            variant="secondary"
+            className="rounded px-1.5 py-0.5 text-[10px] font-normal"
+          >
+            {getFileTypeLabel(file.filename)}
+          </Badge>
+          <span className="text-muted-foreground text-[10px]">
+            {t.uploads.uploading}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!file.path) return null;
+
+  const fileUrl = resolveArtifactURL(file.path, threadId);
+
+  if (isImage) {
+    return (
+      <a
+        href={fileUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group border-border/40 relative block overflow-hidden rounded-lg border"
+      >
+        <img
+          src={fileUrl}
+          alt={file.filename}
+          loading="lazy"
+          decoding="async"
+          className="h-32 w-auto max-w-60 object-cover transition-transform group-hover:scale-105"
+        />
+      </a>
+    );
+  }
+
+  return (
+    <div className="bg-background border-border/40 flex max-w-50 min-w-30 flex-col gap-1 rounded-lg border p-3 shadow-sm">
+      <div className="flex items-start gap-2">
+        <FileIcon className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+        <span
+          className="text-foreground truncate text-sm font-medium"
+          title={file.filename}
+        >
+          {file.filename}
+        </span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <Badge
+          variant="secondary"
+          className="rounded px-1.5 py-0.5 text-[10px] font-normal"
+        >
+          {getFileTypeLabel(file.filename)}
+        </Badge>
+        <span className="text-muted-foreground text-[10px]">
+          {formatBytes(file.size)}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+const MessageContent = memo(MessageContent_);

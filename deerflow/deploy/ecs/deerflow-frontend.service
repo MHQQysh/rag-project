@@ -1,0 +1,14 @@
+[Unit]
+Description=Original DeerFlow Next.js Production Frontend
+After=network-online.target deerflow-gateway.service
+[Service]
+WorkingDirectory=/opt/deerflow/frontend-runtime
+EnvironmentFile=/etc/deerflow/runtime.env
+ExecStart=/opt/deerflow/frontend-runtime/bin/node server.js
+Restart=on-failure
+RestartSec=5
+MemoryHigh=350M
+MemoryMax=512M
+MemorySwapMax=256M
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,85 @@
+{
+  "skill": "interview-cheatsheet",
+  "scope": "User-requested 120 project-specific engineering questions; generic 25-question ML template adapted to user scope.",
+  "date": "2026-10-06",
+  "question_count": 120,
+  "source": "deerflow/docs/interview/complete-guide.md",
+  "source_sha256": "0f93fc284bcaf7f9302637fb657e85c711a4eff6b94a52bae41bc7fc49ae1e18",
+  "questions_sha256": "1ae258c40aab4b93b8e53037682fe4e306814812cc11c09d7654e2c6f47625f7",
+  "independent_review": {
+    "verdict": "PASS",
+    "rounds": [
+      {
+        "run": 1,
+        "agent": "interview_review_1",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "xhigh",
+        "verdict": "FAIL",
+        "findings": [
+          "Q025 did not distinguish current idempotency semantics from proposed payload validation.",
+          "Q103 host CPU wording not substantiated in published deployment notes.",
+          "Q108 duplicated Q006 repository-placement topic."
+        ],
+        "fixes": [
+          "Q025 now states current owner/thread/key reuse and labels payload fingerprint rejection as unimplemented.",
+          "Q103 now refers to low-memory hardware.",
+          "Q108 now covers nested GitHub Actions discovery; Q114 now covers a ten-minute live demonstration.",
+          "Q015 references and overview paths corrected; stale sandbox timeout comment corrected."
+        ]
+      },
+      {
+        "run": 2,
+        "agent": "interview_review_2",
+        "model": "gpt-5.6-sol",
+        "reasoning_effort": "xhigh",
+        "verdict": "PASS",
+        "verified_fixes": [
+          "Q025 current idempotency accurately separated from proposed conflict check.",
+          "Q103 low-memory wording matches published evidence.",
+          "Q108 and Q114 now cover distinct topics.",
+          "Q015 and overview source paths corrected.",
+          "Both stale readiness timeout comments corrected; unrelated idle-check interval preserved."
+        ],
+        "source_references_checked": 186,
+        "unique_source_paths": 87,
+        "missing_source_paths": 0,
+        "blocking_issues": []
+      }
+    ]
+  },
+  "render_validation": {
+    "renderer": "render-html/render_html.py, academic template, offline mode",
+    "automatic_renderer_review": false,
+    "static_checks": [
+      "120 unique question IDs and titles",
+      "12 chapters with10 questions each",
+      "48 L1 /48 L2 /24 L3",
+      "all question source paths exist",
+      "120 cards and120 expanded print answers",
+      "no external scripts",
+      "inline JavaScript syntax check",
+      "print output source SHA matches Markdown"
+    ],
+    "browser_checks": [
+      "search tool_call_id yields2 questions",
+      "L1 filter yields48 questions",
+      "chapter6 andL1 together yield4 questions",
+      "mastered andunmastered filter updates count",
+      "random selection changes hash and focuses a question",
+      "reset restores120 questions",
+      "desktop layout visually inspected"
+    ],
+    "mobile_visual_check": "not performed",
+    "existing_pages_checks": {
+      "commerce_build": "passed",
+      "commerce_tests": "10 passed",
+      "deerflow_web_tests": "8 passed"
+    },
+    "verdict": "PASS"
+  },
+  "scope_limits": [
+    "Current task publishes source and static docs, not a new ECS deployment.",
+    "Past backend full suite was interrupted; no full-suite pass claimed.",
+    "Current public Agent domain accessibility still subject to recorded ICP issue."
+  ]
+}

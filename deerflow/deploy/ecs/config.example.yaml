@@ -1,0 +1,305 @@
+config_version: 45
+log_level: info
+logging:
+  enhance:
+    enabled: false
+    format: text
+token_usage:
+  enabled: true
+token_budget:
+  enabled: false
+  max_tokens: 200000
+  max_input_tokens: null
+  max_output_tokens: null
+  warn_threshold: 0.8
+  hard_stop_threshold: 1.0
+recursion_limit: 100
+max_recursion_limit: 1000
+models:
+- name: deepseek-flash
+  display_name: DeepSeek Flash
+  use: deerflow.models.patched_deepseek:PatchedChatDeepSeek
+  model: deepseek-flash
+  api_base: https://api.deepseek.com
+  api_key: $DEEPSEEK_API_KEY
+  timeout: 600.0
+  max_retries: 2
+  max_tokens: 8192
+  context_window: 1048576
+  supports_thinking: true
+  supports_vision: true
+  when_thinking_enabled:
+    extra_body:
+      thinking:
+        type: enabled
+  when_thinking_disabled:
+    extra_body:
+      thinking:
+        type: disabled
+- name: deepseek-v4-pro
+  display_name: DeepSeek Pro
+  use: deerflow.models.patched_deepseek:PatchedChatDeepSeek
+  model: deepseek-v4-pro
+  api_base: https://api.deepseek.com
+  api_key: $DEEPSEEK_API_KEY
+  timeout: 600.0
+  max_retries: 2
+  max_tokens: 8192
+  context_window: 1048576
+  supports_thinking: true
+  supports_vision: false
+  when_thinking_enabled:
+    extra_body:
+      thinking:
+        type: enabled
+  when_thinking_disabled:
+    extra_body:
+      thinking:
+        type: disabled
+tool_groups:
+- name: web
+- name: file:read
+- name: file:write
+- name: bash
+- name: browser
+- name: knowledge
+tools:
+- name: web_search
+  group: web
+  use: deerflow.community.ddg_search.tools:web_search_tool
+  max_results: 5
+- name: web_fetch
+  group: web
+  use: deerflow.community.jina_ai.tools:web_fetch_tool
+  timeout: 10
+- name: image_search
+  group: web
+  use: deerflow.community.image_search.tools:image_search_tool
+  max_results: 5
+- name: ls
+  group: file:read
+  use: deerflow.sandbox.tools:ls_tool
+- name: read_file
+  group: file:read
+  use: deerflow.sandbox.tools:read_file_tool
+- name: glob
+  group: file:read
+  use: deerflow.sandbox.tools:glob_tool
+  max_results: 200
+- name: grep
+  group: file:read
+  use: deerflow.sandbox.tools:grep_tool
+  max_results: 100
+- name: write_file
+  group: file:write
+  use: deerflow.sandbox.tools:write_file_tool
+- name: str_replace
+  group: file:write
+  use: deerflow.sandbox.tools:str_replace_tool
+- name: bash
+  group: bash
+  use: deerflow.sandbox.tools:bash_tool
+tool_search:
+  enabled: false
+  auto_promote_top_k: 3
+tool_output:
+  enabled: true
+  externalize_min_chars: 12000
+  preview_head_chars: 2000
+  preview_tail_chars: 1000
+  fallback_max_chars: 30000
+  fallback_head_chars: 8000
+  fallback_tail_chars: 3000
+  storage_subdir: .tool-results
+  exempt_tools:
+  - read_file
+  - read_file_tool
+  elide_superseded_writes: true
+  superseded_write_min_chars: 2000
+  keep_recent_writes: 1
+suggestions:
+  enabled: true
+  max_suggestions: 3
+input_polish:
+  enabled: true
+  max_chars: 4000
+  model_name: null
+loop_detection:
+  enabled: true
+  warn_threshold: 3
+  hard_limit: 5
+  window_size: 20
+  max_tracked_threads: 100
+  tool_freq_warn: 30
+  tool_freq_hard_limit: 50
+read_before_write:
+  enabled: true
+  elide_blocked_payloads: true
+  elide_min_chars: 2000
+projects:
+  instructions_max_bytes: 8192
+  shelf_index_max_entries: 50
+  shelf_index_max_bytes: 4096
+  trash_retention_days: 30
+safety_finish_reason:
+  enabled: true
+uploads:
+  max_files: 10
+  max_file_size: 52428800
+  max_total_size: 104857600
+  auto_convert_documents: false
+  pdf_converter: auto
+sandbox:
+  use: deerflow.community.aio_sandbox:AioSandboxProvider
+  image: enterprise-public-cn-beijing.cr.volces.com/vefaas-public/all-in-one-sandbox:1.11.0
+  replicas: 1
+  idle_timeout: 180
+  environment:
+    DISABLE_CODE_SERVER: 'true'
+    DISABLE_JUPYTER: 'true'
+subagent_runtime:
+  max_running: 1
+  max_queued: 8
+  admission_policy: queue
+  queue_timeout_seconds: 300
+subagent_batches:
+  enabled: false
+  poll_interval_seconds: 1
+  lease_seconds: 120
+  max_items_per_batch: 5000
+  default_max_live_items: 100
+  max_live_items_per_batch: 1000
+  default_max_running_items: 3
+  max_running_items_per_batch: 64
+  max_attempts: 3
+  max_result_chars: 100000
+  result_preview_max_chars: 2000
+verification:
+  receipts_enabled: true
+  receipts_render_mode: delegation_only
+  judge_enabled: false
+  judge_model_name: null
+skills:
+  container_path: /mnt/skills
+skill_scan:
+  enabled: true
+title:
+  enabled: true
+  max_words: 6
+  max_chars: 60
+  model_name: null
+task_continuity:
+  enabled: false
+  max_batches: 32
+  max_records_per_batch: 256
+  max_record_chars: 16000
+summarization:
+  enabled: true
+  model_name: null
+  trigger:
+  - type: tokens
+    value: 32000
+  keep:
+    type: messages
+    value: 10
+  trim_tokens_to_summarize: 15564
+  summary_prompt: null
+  skill_file_read_tool_names:
+  - read_file
+  - read
+  - view
+  - cat
+memory:
+  enabled: true
+  injection_enabled: true
+  shutdown_flush_timeout_seconds: 30.0
+  manager_class: deermem
+  mode: middleware
+  backend_config:
+    storage_path: ''
+    storage_class: file
+    strict_user_scope: false
+    manifest_filename: memory.json
+    file_lock_timeout_seconds: 10
+    retrieval_adapter: fts5
+    debounce_seconds: 30
+    queue_max_depth: 1000
+    model: null
+    max_facts: 100
+    fact_confidence_threshold: 0.7
+    fact_eviction_policy: confidence
+    fact_eviction_shadow_enabled: false
+    eviction_confidence_weight: 0.65
+    eviction_confirmation_weight: 0.25
+    eviction_access_weight: 0.1
+    eviction_confirmation_half_life_days: 90
+    eviction_access_half_life_days: 30
+    eviction_correction_reserved_fraction: 0.1
+    eviction_correction_reserved_max: 10
+    eviction_audit_max_entries: 200
+    max_injection_tokens: 2000
+    token_counting: tiktoken
+    guaranteed_categories:
+    - correction
+    guaranteed_token_budget: 500
+    staleness_review_enabled: true
+    staleness_age_days: 90
+    staleness_min_candidates: 3
+    staleness_max_removals_per_cycle: 10
+    staleness_protected_categories:
+    - correction
+    staleness_max_lifetime_multiplier: 20.0
+    staleness_max_extension_days: 3650
+    consolidation_enabled: false
+    consolidation_min_facts: 8
+    consolidation_max_groups_per_cycle: 3
+    consolidation_max_sources: 8
+agents_api:
+  enabled: false
+skill_evolution:
+  enabled: false
+  moderation_model_name: null
+  security_fail_closed: true
+database:
+  backend: sqlite
+  sqlite_dir: /var/lib/deerflow/data
+run_events:
+  backend: db
+agent_storage:
+  backend: file
+scheduler:
+  enabled: false
+  multi_instance: false
+  poll_interval_seconds: 5
+  lease_seconds: 120
+  max_concurrent_runs: 3
+  queue_timeout_seconds: 3600
+  min_once_delay_seconds: 60
+  recursion_limit: 1000
+mcp_tasks:
+  enabled: false
+  poll_interval_seconds: 5
+  lease_seconds: 120
+  max_concurrent_polls: 8
+  max_poll_backoff_seconds: 300
+  input_required_poll_interval_seconds: 60
+  tracking_degraded_after_errors: 3
+  max_result_bytes: 65536
+  result_preview_max_chars: 2000
+run_ownership:
+  lease_seconds: 30
+  grace_seconds: 10
+  heartbeat_enabled: false
+authorization:
+  enabled: false
+stream_bridge:
+  type: redis
+  redis_url: redis://127.0.0.1:6379/1
+  stream_ttl_seconds: 3600
+  queue_maxsize: 256
+  max_connections: 20
+llm_call:
+  max_concurrent_calls: 2
+auth:
+  local:
+    allow_registration: false

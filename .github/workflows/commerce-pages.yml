@@ -6,6 +6,7 @@ on:
       [
         "db-gpt-commerce/**",
         "deerflow-web/**",
+        "deerflow/docs/interview/**",
         "scripts/assemble-pages.mjs",
         ".github/workflows/commerce-pages.yml",
       ]
