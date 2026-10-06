@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://api.deepseek.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>DeerFlow Web · 文档与思考工作台</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <div class="workspace">
+      <aside class="sidebar">
+        <a class="brand" href="./"
+          ><span class="brand-mark">D<span>↗</span></span
+          ><span>DeerFlow <em>WEB</em></span></a
+        >
+        <p class="tagline">文档、问题与下一步思考。</p>
+        <button id="new-chat" class="new-chat">＋ 新对话</button>
+        <section class="settings">
+          <div class="section-label">
+            01 / 模型连接 <span class="local-badge">自带 Key</span>
+          </div>
+          <label for="api-key">DeepSeek API Key</label>
+          <div class="key-row">
+            <input
+              id="api-key"
+              type="password"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="输入你的 API Key"
+              aria-describedby="key-note"
+            /><button
+              id="clear-key"
+              class="icon-button"
+              title="清除 Key"
+              aria-label="清除 Key"
+            >
+              ×
+            </button>
+          </div>
+          <p id="key-note" class="note">
+            仅在当前页面使用，刷新即清除。直接连接 DeepSeek，不上传给 GitHub。
+          </p>
+          <label for="model">模型</label
+          ><select id="model">
+            <option value="deepseek-flash">DeepSeek Flash · 快速</option>
+            <option value="deepseek-v4-pro">DeepSeek Pro · 深入</option>
+          </select>
+          <p class="note">真实调用按你的 DeepSeek 账户计费。</p>
+        </section>
+        <section class="documents">
+          <div class="section-label">
+            02 / 我的资料 <span id="doc-count">0 份</span>
+          </div>
+          <label class="upload" for="files"
+            ><span>↑ 添加本地资料</span
+            ><small>TXT / Markdown · 每份 ≤ 1 MB</small></label
+          ><input
+            id="files"
+            class="file-input"
+            type="file"
+            accept=".txt,.md,.markdown"
+            multiple
+          />
+          <div class="document-actions">
+            <button id="sample" class="text-button">载入示例资料</button
+            ><button id="clear-docs" class="text-button">清空</button>
+          </div>
+          <ul id="file-list" class="file-list"></ul>
+          <p class="note">
+            最多 8 份、合计 4 MB。浏览器中检索，只将命中片段随问题发送给模型。
+          </p>
+        </section>
+        <div class="sidebar-bottom">
+          <a href="./guide.html">↗ 架构与代码讲解</a
+          ><a
+            href="https://github.com/MHQQysh/rag-project/tree/main/deerflow-web"
+            target="_blank"
+            rel="noopener noreferrer"
+            >↗ 查看项目源码</a
+          ><a href="../">← 项目首页</a>
+          <p class="note">独立浏览器轻量版<br />不包含完整 DeerFlow 后端</p>
+        </div>
+      </aside>
+      <main>
+        <header class="topbar">
+          <span
+            ><i class="dot"></i> 浏览器工作台
+            <span class="divider">/</span> 新的探索</span
+          ><button id="export" class="secondary">↓ 导出对话</button>
+        </header>
+        <div class="content">
+          <section id="welcome" class="welcome">
+            <div class="eyebrow">DEERFLOW WEB / PERSONAL WORKSPACE</div>
+            <h1>让资料里的知识，<br /><span>成为清晰的答案。</span></h1>
+            <p>
+              提出问题，或带上你的文档。把检索依据、模型回答与代码逻辑放在一起看。
+            </p>
+            <div class="suggestions">
+              <button
+                data-question="用一个具体例子解释 Agent、Tool 和 Skill 的区别。"
+              >
+                <b>理解一个概念 ↗</b
+                ><span>Agent、Tool 和 Skill 如何配合？</span></button
+              ><button
+                data-question="请根据资料说明 RAG 分块、检索、生成的完整链路，并引用来源。"
+              >
+                <b>从资料找到答案 ↗</b
+                ><span>先载入示例，试试 RAG 文档问答。</span></button
+              ><button
+                data-question="DeerFlow 完整版与这个浏览器轻量版的架构有什么区别？"
+              >
+                <b>读懂项目架构 ↗</b><span>网页、模型与执行环境各做什么？</span>
+              </button>
+            </div>
+            <div class="scope-note">
+              <span>轻量，且透明</span
+              >支持聊天、文档检索与导出。联网搜索、代码执行、多 Agent
+              和服务器记忆需要完整后端。
+            </div>
+          </section>
+          <section
+            id="messages"
+            class="messages"
+            aria-label="对话记录"
+          ></section>
+          <section id="sources" class="sources" hidden>
+            <div class="section-label">
+              检索依据 <span id="source-count"></span>
+            </div>
+            <p class="note">这里是本轮实际选中的原文；回答中的引用仍需核对。</p>
+            <div id="source-list"></div>
+          </section>
+        </div>
+        <footer class="composer-area">
+          <div id="status" class="status" role="status" aria-live="polite">
+            准备就绪 · 输入 Key 开始聊天，也可先预览资料检索。
+          </div>
+          <form id="chat-form">
+            <label for="question" class="sr-only">你的问题</label
+            ><textarea
+              id="question"
+              maxlength="4000"
+              rows="3"
+              placeholder="输入你的问题，例如：这份资料的核心逻辑是什么？"
+            ></textarea>
+            <div class="composer-actions">
+              <span>Enter 发送 · Shift + Enter 换行</span>
+              <div>
+                <button type="button" id="preview" class="secondary">
+                  只看检索</button
+                ><button type="button" id="stop" class="secondary" hidden>
+                  停止生成</button
+                ><button type="submit" id="send" class="primary">发送 ↑</button>
+              </div>
+            </div>
+          </form>
+          <p class="footnote">
+            刷新将清除
+            Key、资料与对话。需要保留时请先导出；模型可能出错，请核对关键结论。
+          </p>
+        </footer>
+      </main>
+    </div>
+  </body>
+</html>

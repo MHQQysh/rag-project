@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>代码与逻辑 · DeerFlow Web</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <article class="guide">
+      <a href="./">← 回到工作台</a>
+      <p class="eyebrow">ARCHITECTURE / CODE / EXECUTION</p>
+      <h1>先看清数据怎么走，<br />再理解代码怎么写。</h1>
+      <p>
+        本项目是受 DeerFlow 启发的独立浏览器轻量版。它可以直接发布到 GitHub
+        Pages；完整 DeerFlow 的 Python 后端、子
+        Agent、沙箱和长期记忆没有被移植到浏览器中。
+      </p>
+      <h2>01 / 一次问题经过什么</h2>
+      <pre>
+你输入问题 + 可选本地资料
+  ↓ core.mjs
+资料分块 → 关键词评分 → 最多 8 个命中片段
+  ↓ buildMessages
+系统规则 + 有限历史 + 问题 + 带编号的资料
+  ↓ model.mjs
+浏览器直接请求 DeepSeek → SSE 逐步接收回答
+  ↓ app.mjs
+显示文字 + 原文依据 → 导出 Markdown</pre>
+      <p>
+        模型负责理解与回答；网页负责读取文档、检索、组织消息和显示结果。这里的流程由程序固定执行，并不是模型自己调用工具的多轮
+        Agent 循环。
+      </p>
+      <h2>02 / 四个源码入口</h2>
+      <table>
+        <tr>
+          <th>文件</th>
+          <th>输入 → 处理 → 输出</th>
+        </tr>
+        <tr>
+          <td>
+            <a
+              href="https://github.com/MHQQysh/rag-project/blob/main/deerflow-web/core.mjs"
+              >core.mjs</a
+            >
+          </td>
+          <td>文本和问题 → 分块、检索、限制上下文 → 命中片段与模型消息</td>
+        </tr>
+        <tr>
+          <td>
+            <a
+              href="https://github.com/MHQQysh/rag-project/blob/main/deerflow-web/model.mjs"
+              >model.mjs</a
+            >
+          </td>
+          <td>
+            Key 和消息 → HTTPS 请求、解析 SSE、取消与超时 → 文字增量或错误
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a
+              href="https://github.com/MHQQysh/rag-project/blob/main/deerflow-web/app.mjs"
+              >app.mjs</a
+            >
+          </td>
+          <td>用户操作 → 维护页面状态、调用模块 → 资料列表、回答、下载</td>
+        </tr>
+        <tr>
+          <td>
+            <a
+              href="https://github.com/MHQQysh/rag-project/blob/main/deerflow-web/index.html"
+              >index.html / styles.css</a
+            >
+          </td>
+          <td>页面结构与样式 → 桌面和手机上的可操作界面</td>
+        </tr>
+      </table>
+      <h2>03 / 检索为什么能找资料</h2>
+      <p>
+        <code>chunkDocument</code> 每 900 个 JavaScript 字符切一块，相邻块重叠
+        120 个字符；它不是按模型 token
+        分块。英文按词、中文按相邻两个字分词，再计算类似 BM25
+        的关键词分数。出现查询词的片段才可能命中，最多取 8 块。
+      </p>
+      <p>
+        例如问“上下文压缩”，查询中会包含“上下”“下文”“文压”“压缩”。包含这些词的片段会获得分数。它能找到精确术语，但未必理解同义词，所以这里不宣称向量检索。没有命中时，界面和模型上下文都会明确说明。
+      </p>
+      <p>
+        来源编号如 [S1]
+        是程序添加的本轮标签。模型可能引用错误，因此网页同时保留实际原文；你可以展开逐一核对，导出也会包含这些片段。
+      </p>
+      <h2>04 / 上下文和流式输出</h2>
+      <p>
+        <code>buildMessages</code>
+        放入行为规则、最近成功对话和检索片段。历史最多考虑最近 8 条消息、总计
+        9000 字符；单个问题最多 4000
+        字符。被取消或失败的回答不会作为成功历史继续提交。这是有限历史选择，不是长期记忆或自动摘要。
+      </p>
+      <p>
+        <code>streamChat</code> 按 UTF-8 解码字节，缓存未结束的行，再解析 SSE 的
+        <code>data:</code> 事件。网络一次送来的字节不一定是一段完整
+        JSON，甚至可能把一个汉字拆开；这就是不能简单地对每个网络块直接
+        JSON.parse 的原因。只有正常结束且有文字，才标记回答完成。
+      </p>
+      <p>
+        “停止生成”会中止当前浏览器请求；接口费用和远端是否已经完成计算由供应商决定。120
+        秒超时、输出上限或连接中断都会显式显示，保留下来的部分文字不会冒充完整回答。
+      </p>
+      <h2>05 / Key 和资料在哪里</h2>
+      <p>
+        Key 只在输入框和当前请求的页面内存中。应用不使用
+        localStorage、sessionStorage、Cookie 或数据库保存它，不放入 URL
+        或导出文件。请求目标固定为
+        <code>https://api.deepseek.com/chat/completions</code>，GitHub
+        只提供静态文件。刷新后需重新输入 Key。
+      </p>
+      <p>
+        TXT/Markdown 在浏览器中读取、分块，命中的片段连同问题与有限历史会发送给
+        DeepSeek。没有把原始文档上传到
+        GitHub。模型输出作为纯文本显示，因此输出中的 HTML
+        或脚本不会执行。刷新后资料和对话会清除，保存请用导出。
+      </p>
+      <h2>06 / 与完整 DeerFlow 的关系</h2>
+      <table>
+        <tr>
+          <th>能力</th>
+          <th>本网页</th>
+          <th>完整 DeerFlow</th>
+        </tr>
+        <tr>
+          <td>聊天、流式回答</td>
+          <td>浏览器直接调用 DeepSeek</td>
+          <td>前端 → Gateway → Agent → 模型</td>
+        </tr>
+        <tr>
+          <td>资料处理</td>
+          <td>TXT/Markdown 关键词检索</td>
+          <td>后端工具与文件处理机制，取决于配置</td>
+        </tr>
+        <tr>
+          <td>工具与多 Agent</td>
+          <td>未实现</td>
+          <td>模型工具调用、子 Agent 委派</td>
+        </tr>
+        <tr>
+          <td>持久化</td>
+          <td>当前页面内存、手动导出</td>
+          <td>会话、checkpoint、记忆等分别管理</td>
+        </tr>
+        <tr>
+          <td>部署</td>
+          <td>GitHub Pages 静态站点</td>
+          <td>需要前端服务、Python 后端及相应运行环境</td>
+        </tr>
+      </table>
+      <p>
+        完整框架的核心代码可从上游
+        <a
+          href="https://github.com/bytedance/deer-flow/tree/a58ab484a641fd5928ae512ad21c5c7fd7a18c18/backend/packages/harness/deerflow"
+          >harness/deerflow</a
+        >
+        阅读：agents 组装 Agent，tools 提供操作接口，subagents 管理委派，runtime
+        管理执行与事件。这与本项目的 3 个浏览器模块是两套实现。
+      </p>
+      <h2>07 / GitHub 到网页是怎样连起来的</h2>
+      <pre>
+提交源码到 main
+  → GitHub Actions 执行测试并构建 commerce
+  → 把两个项目的静态文件放进一个发布目录
+  → Pages 部署这个目录
+  → /rag-project/deerflow-web/ 打开本项目</pre>
+      <p>
+        本项目不需要把 DeepSeek Key 配进 GitHub
+        Secrets。每位访问者在网页输入自己的 Key 即可。完整源码位于
+        <a href="https://github.com/MHQQysh/rag-project/tree/main/deerflow-web"
+          >deerflow-web</a
+        >；已有其他子项目保留。网站当前使用哪个域名以仓库 Settings → Pages
+        显示为准。
+      </p>
+      <h2>先这样试一次</h2>
+      <ol>
+        <li>回工作台，点击“载入示例资料”。</li>
+        <li>输入“RAG 分块和检索有什么关系？”，点击“只看检索”，核对原文。</li>
+        <li>输入自己的 Key，点击发送，观察回答逐步显示。</li>
+        <li>对照 [S1] 等引用，导出本次对话。</li>
+      </ol>
+    </article>
+  </body>
+</html>
